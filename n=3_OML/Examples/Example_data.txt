@@ -1,0 +1,139 @@
+Example 1
+---------
+One Lindblad operator.
+
+L = 
+
+ (77,-0) (-80,-76) (33,-162)
+ (-99,-119) (8,-38) (42,-129)
+ (-59,-166) (-57,-134) (-85,38)
+
+Flag used was the principal flag.
+
+Example1_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
+Example1_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 400, grid_size2 = 400, as well as B03_arcs.m with
+	grid_size1 = 400, grid_size2 = 400
+Example1_fills.png: used AE3_fill.m with grid_size1 = 40 and B03_fill.m with grid_size1,2,3 = 400
+Example1_twp1.png:  used tangents_with_princ.m using gno = 6 and x = [0;0]
+Example1_twp2.png:  used tangents_with_princ.m using gno = 6 and x = [1;1/sqrt(3)]
+Example1_twp3.png:  used tangents_with_princ.m using gno = 6 and x = [0;1/sqrt(3)]
+Example1_traj.png:  used trajectories.m with gno = 10
+
+
+Example 2
+---------
+
+Four Lindblad operators.
+
+L1 =
+
+(0.4580018402687731,0) 			(-0.7608556775286631,0.8279833114963254) 	(-0.4346826618893302,1.588700617847633) 
+(0.3193019423465014,0.4385325955305862)	(-0.6331998756236776,0.2137442446824539) 	(-0.2213228768832163,1.286845709109237)
+(-0.9229646548901123,0.724618459552965)	(-0.6678878995803645,0.5888835739444263) 	(0.1751980353549047,-0.2137442446824542)
+
+L2 =
+
+(0.4483860311757818,0)				(-0.250704835620422,0.6353194029409587)	(-0.9376289846960522,0.7594339065116819)   
+(-0.8419489911958381,0.1255110605201483) 	(-0.6037837349700002,0.1213247802382959)(-0.306498804494599,0.5780916737638014)  
+(-0.2223707968408206,0.7462654554231074) 	(-1.278238437778893,0.1218406089122955)	(0.1553977037942184,-0.1213247802382959)
+
+L3 =
+
+(0.01189481256676416,0) 			(-0.06230894729473836,0.01404523247069341)(-0.04830900362199514,-0.005088176327405387) 
+(-0.01521191463645765,0.006702153740902613)   	(-0.0037860973390234,0.003290259456523321) (-0.04249170973737747,0.02695884269687052) 
+(-0.008168142032907805,0.004092283143837968) 	(-0.01642778547758014,0.0140492208241183)(-0.00810871522774077,-0.003290259456523322)
+
+L4 =
+
+(4.380621214730494,0)  			(-12.49807821086242,0.1973394887324158)	(-9.097279268837863,-8.672358199524581)
+(-3.407415385587661,0.638606080233731)  (-3.295374243271347,-1.796705276906815)	(-11.1867844840123,6.733385350928476) 
+(-15.1607826075691,2.027016499082452)  	(-12.77482337313963,1.995524482695881) 	(-1.085246971459143,1.796705276906817)
+
+Flag used was the principal flag.
+
+
+Example2_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
+Example2_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 400, grid_size2 = 400, as well as B03_arcs.m with
+	grid_size1 = 400, grid_size2 = 400
+Example2_fills.png: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 800
+Example2_tang_w_princ.png:  used tangents_with_princ.m using gno = 6 and x = [0.6;0.4]
+Example2_traj.png:  used trajectories.m with gno = 10
+
+Example 3
+---------
+One Lindblad operator.
+
+L = 
+
+0	1	.3
+1	0	.3
+0	0	0
+
+Flag used was the identity.
+
+Example3_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
+Example3_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
+	grid_size1 = 200, grid_size2 = 200
+Example3_fills.png: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 200
+Example3_traj.png:  used trajectories.m with gno = 20
+
+Example 4
+---------
+One Lindblad operator.
+
+L = 
+
+0	0	0
+2	0	6
+3	5	0
+
+Flag used was the identity.
+
+Example4_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
+Example4_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
+	grid_size1 = 200, grid_size2 = 200
+Example4_fills.png: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 200
+Example4_traj.png:  used trajectories.m with gno = 20
+
+
+Example 5
+---------
+One Lindblad operator.
+
+L = 
+
+0	1	5
+1	0	sqrt(24)
+0	0	0
+
+Flag used was the identity.
+
+Example5_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
+Example5_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
+	grid_size1 = 200, grid_size2 = 200
+Example5_fills.png: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 200
+Example5_twp.png:  used tangents_with_princ.m with gno = 6
+Example5_traj.png:  used trajectories.m with gno = 20
+
+
+Example 6
+---------
+Disconnected graph.
+
+w = 
+
+0	1	0
+2	0	0
+0	0	0
+
+
+Example 7
+---------
+Disconnected graph.
+
+w = 
+
+0	1	0
+7	0	0
+0	0	0
+
