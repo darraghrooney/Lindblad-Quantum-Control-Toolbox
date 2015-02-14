@@ -3,8 +3,8 @@ Octave/MATLAB code for calculating steady-states and constraints of Lindblad sys
 
 Author: Darragh Patrick Rooney
 
-A quantum system under Lindblad systems is contracting on the space of density matrix
-eigenvalues lambda. lambda obeys a linear ODE: `d(lambda)/dt = B*lambda`. The matrix B has
+A quantum system under Lindblad dissipation is contracting on the space of lambda, the vector of density matrix
+eigenvalues. lambda obeys a linear ODE: `d(lambda)/dt = B*lambda`. The matrix B has
 off-diagonal elements `w(i,j)` and off-diagonal elements `-sum(i!=j) w(i,j)`. The columns sum 
 to zero, so that the sum of lambda remains one. 
 
