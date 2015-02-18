@@ -47,8 +47,8 @@ char mainMenu(void){
 			"n=2 Lindblad systems." << endl << endl;
 	cout << "Press 'r' for random GKS matrix." << endl;
 	cout << "Press 'f' to enter data as a file." << endl;
-	cout << "Press 'p' to enter data for the Pauli GKS matrix." << endl;
 	cout << "Press 's' to enter data for the real-diagonalized Pauli GKS matrix." << endl;
+	cout << "Press 'p' to enter data for the undiagonalized Pauli GKS matrix." << endl;
 	cout << "Press 'j' to enter data for the +/-/z GKS matrix." << endl << endl;
 	cin >> choice; cout << endl;
 	
