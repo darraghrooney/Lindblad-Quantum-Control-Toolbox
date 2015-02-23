@@ -4,7 +4,7 @@ This is a program for analyzing the fast control of a 2d Lindblad quantum contro
 
 In some special cases, there are bifurcations (either thread may split into three, or a third thread may pop up independently). These threads are detected by the program and dealt with. If the maximum-velocity thread bifurcates, there may be an alternate horizon (actually, a pair of equal-radius horizons). 
 
-### Installation
+## Installation
  
 This program depends on Armadillo, a C++ linear algebra package:
 
@@ -18,7 +18,7 @@ Armadillo depends in turn on LAPACK and BLAS.
 
 If all three are properly installed, simply run `make` from the *src* directory. Additionally the user should have gnuplot installed in order to process the program results.
 
-### Usage
+## Usage
 
 Lindlad2 is an interactive program from the terminal. There are five options for producing a system: 
 1. The program can choose a random system (this is the appropriate choice for users unfamiliar with the math).
