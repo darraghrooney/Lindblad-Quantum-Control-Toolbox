@@ -27,4 +27,6 @@ Lindblad2: $(OBJ)
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o $(IDIR)/*~ *.dat *.gnu *~ core 
+	rm -r -f $(ODIR)
+	rm -f $(IDIR)/*~ *.dat *.gnu *~ core 
+
