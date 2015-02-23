@@ -20,7 +20,8 @@ If all three are properly installed, simply run `make` from the *src* directory.
 
 ### Usage
 
-Lindlad2 is an interactive program from the terminal. There are five options for producing a system: 
+Lindblad2 is an interactive program from the terminal. There are five options for producing a system: 
+
 1. The program can choose a random system (this is the appropriate choice for users unfamiliar with the math).
 2. The six system parameters can be stored as a file.
 3. The six system parameters can be input at the terminal.
@@ -31,9 +32,10 @@ The user will be prompted for a discretization number. The recommended number is
 
 Additionally, the user must give a file name base which the program uses to name the output files.
 
-## Output
+### Output
 
 For each system, the program produces seven files: 
+
 * `***_n.dat` contains the thread co-ordinates. Horizon co-ordinates as well as bifurcated threads are also stored there, but the formatting is not important as the user is not meant to deal. 
 * `***_n_plot.gnu` processes the thread .dat file for gnuplot. It uses the wxt terminal to plot. The line color and types can vary between machines, so the user will have to alter this file if their machine does not produce satisfactory results. All threads are meant to be in black; the maximal thread should be solid, the minimal thread dotted, and any bifurcated threads dashed.
 * `***_f.dat` contains the radial velocities as functions of r. 
