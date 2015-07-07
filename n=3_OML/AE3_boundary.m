@@ -1,4 +1,4 @@
-% This function calculates the outer boundary of the STLC set for an n=3 Lindblad system 
+% This function calculates the outer boundary of the SLC set for an n=3 Lindblad system 
 % with a discrete control set. The function AE3_arcs finds the 15 candidate arcs, and
 % this function determines the boundary of the interior of the region formed from those 
 % arcs.	Two grid sizes are required: one for the candidate arcs, and one for the final

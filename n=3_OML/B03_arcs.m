@@ -1,4 +1,4 @@
-% This function takes the boundary of a STLC set for an n=3 Lindblad control system
+% This function takes the boundary of a SLC set for an n=3 Lindblad control system
 % with discretized control set, and calculates the first-level trajectories that go
 % into finding the GC set, aka B^0_3. These trajectories start at either the end-states
 % or points where a vector field is parallel to an AE3 arc. Two grid_sizes are required:
