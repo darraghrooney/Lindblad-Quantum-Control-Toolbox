@@ -1,54 +1,60 @@
-% This function plots the boundaries for the STLC set for
-% an n=3 Lindblad system, given a discrete set of six Lindblad 
-% rates. The total number of curves is 15. If plot_switch is zero, the 
-% plot is suppressed and only the curves are returned.
+% This function calculates/plots the boundaries for the SLC set for
+% an n=3 Lindblad system, for a discrete set of flags. The identity flag
+% and its 5 permutations are automatically plotted. A specified number of 
+% random flags, as well as their permutations are selected, for a total of
+% 6*un_no. The total number of curves is 6*(un_no+1)*(6*(un_no+1)-1)/2. 
+% If plot_switch is zero, the plot is suppressed and only the curves are 
+% returned.
 
-function [curves] = AE3_arcs(w,grid_size,plot_switch)
+function [curves] = AE3_arcs(L, grid_size, un_no, plot_switch)
 
-% Check that the co-efficients are non-negative
+% Initialization
 
-if ( max(max(w < -1E-15)) == 1)
-	error('Co-efficients must be non-negative');
-end
+bs = zeros(2, 6*(un_no+1));
+As = zeros(2, 2, 6*(un_no+1));
+flag = eye(3);
+count = 0;
+gens = S3gen();
 
-% Calculate input rates and re-order if necessary
+% Loop over number of random flags.
 
-[w,Jv] = order_rates(w);
+while (count <= un_no)
 
-% Calculate A(w_ij)
- 
-[A,b,rinf] = A_b_rinf(w);
+	% Calculate w, b, A for current flag
 
-% Calculate the images of A(w_ij) under action of the symmetric group
+	w = Ltow(L, flag);
+	[A,b] = A_b_rinf(w);
 
-AE = zeros(2,2,6);
-bE = zeros(2,6);
-AE(:,:,1) = A;
-bE(:,1) = b;
+	% Calculate b, A for permutations	
+	
+	for j = 1:6
+		bs(:,6*count+j) = gens(:,:,j)*b;
+		As(:,:,6*count+j) = gens(:,:,j)*A*gens(:,:,j)';
+	end
 
-S3g = S3gen();
+	% Calculate next random flag	
 
-for j=2:6
-	AE(:,:,j) = S3g(:,:,j)*A*S3g(:,:,j)'; 
-	bE(:,j) = S3g(:,:,j)*b;
+	flag = flag_gen([],1);
+
+count++;
 end
 
 % Initialize curves
 
-curves = zeros(grid_size+1,2,15);
-pairs = zeros(6,6);
+pair_count = 6*(un_no+1)*(6*(un_no+1)-1)/2;
+curves = zeros(grid_size+1,2,pair_count);
 count = 1;
 
 % Sweep over pairs of vertices
 
-for j = 1:6
-for k = (j+1):6
+for j = 1:(6*un_no+6)
+for k = (j+1):(6*un_no+6)
 
 	% Sweep over grid
 	for l = 0:grid_size
 		s = l/grid_size;
-		Ain = (1-s)*AE(:,:,j) + s*AE(:,:,k);
-		bin = (1-s)*bE(:,j) + s*bE(:,k);
+		Ain = (1-s)*As(:,:,j) + s*As(:,:,k);
+		bin = (1-s)*bs(:,j) + s*bs(:,k);
 		curves(l+1,:,count) = Ain\bin; 
 	end
 	count += 1;
@@ -59,8 +65,8 @@ end
 
 if (plot_switch)
 	hold on
-	for j = 1:15
-		plot(curves(:,1,j),curves(:,2,j));
+	for j = 1:pair_count
+		plot(curves(:,1,j),curves(:,2,j),'b');
 	end
 
 
@@ -76,5 +82,3 @@ if (plot_switch)
 end
 
 end
-
-

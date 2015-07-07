@@ -4,12 +4,12 @@
 function[deriv] = DF_w(Ls, flag)
 
 % Get the basis for the tangent space
+
 gens = su3off_basis();
 
 % Initialize derivative
 
 deriv = zeros(6,6);
-
 count = 0;
 
 % Sweep over Lindblad rates
@@ -22,7 +22,7 @@ if j != k
 	% Sweep over basis elements	
 	for l = 1:6
 		% Sweep over Lindblad ops			
-		for m = size(Ls,3)
+		for m = 1:size(Ls,3)
 			deriv(count,l) += flag(:,j)'*Ls(:,:,m)*gens(:,:,l)*flag(:,k)...
 						*flag(:,k)'*Ls(:,:,m)'*flag(:,j);
 			deriv(count,l) -= flag(:,j)'*gens(:,:,l)*Ls(:,:,m)*flag(:,k)...

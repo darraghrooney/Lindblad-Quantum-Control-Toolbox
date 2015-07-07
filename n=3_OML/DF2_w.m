@@ -4,11 +4,12 @@
 function[dd] = DF2_w(Ls, flag)
 
 % Fetch the basis matrices for the tangent space
+
 gens = su3off_basis();
 
 % Initialize
-dd = zeros(6,6,6);
 
+dd = zeros(6,6,6);
 c = 0;
 
 % Sweep over wij's
@@ -22,8 +23,8 @@ if j != k
 	for l2 = 1:6
 
 	% Sweep over Lindblad operators
-	for m = size(Ls,3)
-
+	for m = 1:size(Ls,3)
+		
 		% Compute double derivative
 		dd(l1,l2,c) += flag(:,j)'*com(com(Ls(:,:,m),gens(:,:,l1)),gens(:,:,l2))*flag(:,k)*flag(:,k)'*Ls(:,:,m)'*flag(:,j);
 		dd(l1,l2,c) += flag(:,j)'*Ls(:,:,m)*flag(:,k)*flag(:,k)'*com(com(Ls(:,:,m)',gens(:,:,l1)),gens(:,:,l2))*flag(:,j);
