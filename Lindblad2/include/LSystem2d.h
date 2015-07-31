@@ -28,7 +28,7 @@
 #include <string>
 #include <armadillo>
 #include <ctime>
-
+#include <functional>
 
 #define PI 3.141592653589793238462643383
 
@@ -61,21 +61,28 @@ public:
 	double rdot(double, vec*);		
 
 	// Computes the time derivative of nvec given nvec and r
-	vec ndot(vec*, double);	
+	vec ndot(double, vec*);	
 
-	// This is the main file that computes the threads
-	double threads(int, string);
+	// This is the main function that computes the threads
+	vec threads(int, string);
+
+	// This is the function that computes the chimney
+	void chimney(int, string, vec);
+	vec chimneyCorr(double, vec*);
 
 	// Constructs the .gnu files that plot the f, n and e data
 	void gnufilescreate(string);
 
 	// These are helper functions for the numerics
-	void newn_Euler(vec*, double, double);
-	void newn_Heun(vec*, double, double);
-	void newn_RK(vec*, double, double);
+	void new_Euler(vec*, double, double);
+	void new_Heun(vec*, double, double);
+	void new_RK(vec*, double, double);
 	vec newk(vec*, vec*, double, double);
+	
+	// Numeric versions intended for the chimney
+	void new_wall_RK(vec*, double, double);
+	vec new_wall_k(vec*, vec*, double, double);
 
 };
-
 
 #endif // LSYSTEM2D_H_INCLUDED

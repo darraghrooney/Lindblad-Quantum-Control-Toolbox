@@ -43,18 +43,23 @@ int main()
 		// Random input parameters
 		if(choice == 'r')
 			randomMenu();	
+
 		// Input parameters from a file	
 		else if (choice == 'f')
 			fileMenu();
+		
 		// Console input wrt Pauli matrices
 		else if (choice == 'p')
 			PauliMenu();
+		
 		// Console input in avec, bvecv form 
 		else if (choice == 's')
 			realdiagMenu();
+		
 		// Console input in +/-/z basis form
 		else if (choice == 'j')
 			pmzMenu(); 
+		
 		else 	
 			throw 0;
 
@@ -62,10 +67,12 @@ int main()
 	}
 	catch(int e){
 		switch(e){
+		
 			// Thrown in mainMenu()
 			case 0: cout << "You didn't enter an appropriate character."
 					" Exiting program." << endl;
 				break;
+			
 			// Cases 1-5 thrown in LSystem2d constructors (invalid input params)
 			case 1:	cout << "The a_j's are not sorted or one is negative."	
 					" Exiting program." << endl;
@@ -79,6 +86,7 @@ int main()
 			case 4: cout << "'r' is the only character input that makes sense."
 					" Exiting program." << endl;
 				break;
+			
 			// Thrown in rdot() due to normalizing a zero vector
 			case 5: cout << "The n vector must have non-zero magnitude."
 				" Exiting program." << endl;

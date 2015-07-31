@@ -20,6 +20,8 @@
  */
 
 #include "LSystem2d.h"
+#define CHIMNEY_TOL 0.003 
+#define CHIMNEY_LINES 36
 
 using namespace std;
 using namespace arma;
@@ -141,8 +143,8 @@ double LSystem2d::rdot(double r, vec * nvec)
 		avec(2)*nnvec(2)*nnvec(2) - avec(0)*nnvec(0)*nnvec(0));
 }
 
-// This function does the heavy work: calculating fM(r), fm(r), nMVec(r) and nmvec(r) 
-double LSystem2d::threads(int mesh, string file)
+// This function does the heavy work for the thread: calculating fM(r), fm(r), nMVec(r) and nmvec(r) 
+vec LSystem2d::threads(int mesh, string file)
 {
 	// Create .dat files to record fM(r)/fm(r), nvec(r)'s and the errors
 	string filenamef = file + "_f.dat";
@@ -163,7 +165,6 @@ double LSystem2d::threads(int mesh, string file)
 	// There are two threads: one each for nvec(0) = +/- bvec
 	for (int m = 1; m >= -1; m -= 2){
 
-
 		// We can solve exactly at r=0
 		double rd = m*normb;
 		ndat << 0 << " " << 0 << " " << 0 << endl;
@@ -176,9 +177,9 @@ double LSystem2d::threads(int mesh, string file)
 
 		double lambda, poly;
 		for (int step = 1; step <= mesh; step++){
-
+			
 			// Apply Runge-Kutta
-			newn_RK(&nvec, r, stepsize); 
+			new_RK(&nvec, r, stepsize); 
 			r += stepsize;
 
 			// Check to see if horizon if crossed
@@ -188,7 +189,7 @@ double LSystem2d::threads(int mesh, string file)
 				nhorizon = nvec;
 			}
 
-			// Compute nMvec or nmvec
+			// Compute thread vector
 			vec rnvec = r*rotation.t()*nvec;
 
 			// Print updated variables for _f and _n files
@@ -210,10 +211,9 @@ double LSystem2d::threads(int mesh, string file)
 		ndat << endl; fdat << endl; edat << endl;
 	}
 	
-	// Compute the horizon-nvec and print to _n file
+	// Compute the horizon vector
 	vec rnhor = horizon*rotation.t()*nhorizon;
-	ndat << rnhor(0) << " " << rnhor(1) << " " << rnhor(2) << endl << endl;
-
+	
 	// Here follows the special cases where new threads may arise
 
 	// Special case 1: a1 > a2 and b1 = 0
@@ -224,7 +224,7 @@ double LSystem2d::threads(int mesh, string file)
 		double c2 = bvec(2)/2/(avec(0)-avec(2));
 		double rstar = sqrt(pow(c1, 2) + pow(c2, 2));
 
-		// Only matters if rstar <1
+		// Only matters if rstar < 1
 		if (rstar < 1){
 			
 			// Compute one branch of new thread (backward to source)	
@@ -243,6 +243,7 @@ double LSystem2d::threads(int mesh, string file)
 					<< rnvec(2) << endl;
 				fdat << r << " " << rdot(r, &nvec) << endl;
 			}
+
 			// Compute second branch forward from source (so gnuplot
 			//	sees one long thread)
 			for (int k = ceil(rstar*(double)mesh); k <= mesh; k++ ) {
@@ -256,39 +257,17 @@ double LSystem2d::threads(int mesh, string file)
 					<< rnvec(2) << endl;
 				fdat << r << " " << rdot(r, &nvec) << endl;
 			}
+			
 			// Blank lines to indicate thread is finished
 			fdat << endl; 
 			ndat << endl;
-
-			// Compute potential new horizon and print if valid
-			double newhorizon = sqrt((c1*bvec(1) 
-					+ c2*bvec(2))/2/(avec(1)+avec(2)));
-			if (newhorizon > rstar){
-				vec rnhor(3); 
-				rnhor(0) = sqrt(pow(newhorizon,2)+pow(rstar,2)); 
-				rnhor(1) = c1; 
-				rnhor(2) = c2;
-				rnhor = rotation.t()*rnhor;
-				ndat << rnhor(0) << " " << rnhor(1) << " " 
-					<< rnhor(2) << endl << endl;
-				ndat << -rnhor(0) << " " << rnhor(1) << " " 
-					<< rnhor(2) << endl << endl;
-			}
-			// If new horizon isn't valid, hide behind old			
-			else{	
-				ndat << rnhor(0) << " " << rnhor(1) << " " 
-					<< rnhor(2) << endl << endl;
-	
-				ndat << rnhor(0) << " " << rnhor(1) << " " 
-					<< rnhor(2) << endl << endl;
-			}
 		}
 	}
+
 	// Add dummy line to _f file since gnuplot will complain if not there
 	else 	
 		fdat << 0 << " " << 0 << endl << endl;
 		
-
 	// Special case 2: a1 > a2 > a3 and b2 = 0
 	if (bvec(1) == 0 && avec(1) != avec(0) && avec(1) != avec(2)){
 
@@ -316,6 +295,7 @@ double LSystem2d::threads(int mesh, string file)
 					<< rnvec(2) << endl;
 				fdat << r << " " << rdot(r, &nvec) << endl;
 			}
+		
 			// Compute second branch forward from source (so gnuplot
 			//	sees one long thread)
 			for (int k = ceil(rstar*(double)mesh); k <= mesh; k++ ) {
@@ -335,12 +315,6 @@ double LSystem2d::threads(int mesh, string file)
 			// Blank lines to indicate thread is finished
 			fdat << endl; 
 			ndat << endl;
-		
-			// No new horizon so hide behind old
-			ndat << rnhor(0) << " " << rnhor(1) << " " 
-				<< rnhor(2) << endl << endl;
-			ndat << rnhor(0) << " " << rnhor(1) << " " 
-					<< rnhor(2) << endl << endl;
 		}
 	}
 	// Add dummy line to _f file since gnuplot will complain if not there
@@ -394,12 +368,6 @@ double LSystem2d::threads(int mesh, string file)
 
 			fdat << endl; 
 			ndat << endl;
-
-			// No new horizon so hide behind old
-			ndat << rnhor(0) << " " << rnhor(1) << " " 
-				<< rnhor(2) << endl << endl;
-			ndat << rnhor(0) << " " << rnhor(1) << " " 
-					<< rnhor(2) << endl << endl;
 		}
 	}
 	// Add dummy line to _f file since gnuplot will complain if not there
@@ -408,12 +376,12 @@ double LSystem2d::threads(int mesh, string file)
 		
 	// Close data files and return the horizon value (non-special version)
 	fdat.close(); ndat.close();edat.close();
-	return horizon;
+	return rnhor;
 }
 
 // For a given (nvec, r) on S1 cross [0,1], computes d/dt(nvec) according to
 //	the (nvec,r) ODE
-vec LSystem2d::ndot(vec* nvec, double r){
+vec LSystem2d::ndot(double r, vec* nvec){
 	
 	// Enforce normalization
 	vec nv = *nvec / norm(*nvec,2); 
@@ -439,6 +407,141 @@ vec LSystem2d::ndot(vec* nvec, double r){
 	}
 }
 
+// This function computes the chimney
+void LSystem2d::chimney(int mesh, string file, vec rnhor) {
+
+	// Initialization
+	double stepsize = 1. / (double)mesh;
+	vec wall = zeros<vec>(3);
+
+	// Open new data files for chimney and errors
+	string filenamew = file + "_w.dat";
+	string filenamewe = file + "_we.dat";
+	fstream wdat, wedat;
+	wdat.open(filenamew.c_str(), fstream::out);
+	wedat.open(filenamewe.c_str(), fstream::out);
+
+	// Sweep over the lines in the chimney
+	for (int m = 0; m < CHIMNEY_LINES; m++) {
+
+		// Compute start of the chimney line
+		double r = 0;
+		double angle = m * 2 * PI / CHIMNEY_LINES;
+		vec unit1 = zeros<vec>(3);
+		unit1(1) = bvec(2);
+		unit1(2) = -bvec(1);
+		if (norm(unit1) <= 1e-10) {
+			unit1(1) = 1;
+		}
+		unit1 = normalise(unit1);
+		vec unit2 = cross(bvec, unit1);
+		unit2 = normalise(unit2);
+		wall = cos(angle)*unit1 + sin(angle)*unit2;
+		
+		// Record initial info
+		vec rwvec = r*rotation.t()*wall;
+		wdat << rwvec(0) << " " << rwvec(1) << " "
+			<< rwvec(2) << endl;
+		wedat << 0 << " " << 0 << endl;
+
+		// Initialize the exit parameter. Can't start at zero, else chimney
+		// will terminate prematurely
+		double exit_param = 100.;
+
+		do {
+			// Compute next point in chimney line
+			vec oldwall = wall;
+			new_wall_RK(&wall, r, stepsize);
+			wall = normalise(wall);
+			rwvec = r*rotation.t()*wall;
+
+			// Print updated variables for _w file
+			wdat << rwvec(0) << " " << rwvec(1) << " "
+				<< rwvec(2) << " " << endl;
+
+			// Increment and compute error
+			r += stepsize;
+			double werr = abs(rdot(r, &wall));
+			wedat << r << " " << werr << endl;
+
+			// Compute exit parameter
+			vec grad = bvec + 2 * r*(avec % wall);
+			double Lambda = dot(wall, grad);			
+			exit_param = abs(dot(grad, grad) / Lambda / Lambda - 1);
+
+			// Unfortunately algorithm is finicky near the exit. 
+			// Threshold error can't be too small, but if too big will look
+			// articially flat at the end. Also must insert final value
+			// by hand.
+		} while (exit_param > CHIMNEY_TOL);
+
+		// In one special case, the final values are not necessarily the 
+		// typical horizon.
+		if (bvec(0) == 0 && avec(0) > avec(1)) {
+
+			// Calculate alternate horizons
+			vec alt_rnhor = zeros<vec>(3);
+			double rsq = bvec(1) * bvec(1) / 4 / (avec(0) - avec(1)) / (avec(1) + avec(2));
+			rsq += bvec(2) * bvec(2) / 4 / (avec(0) - avec(2)) / (avec(1) + avec(2));
+
+			// Exactly which horizon to insert depends on which line
+			if (m > 0 && m < CHIMNEY_LINES/2 && rsq <= 1) {
+				alt_rnhor(1) = bvec(1) / 2 / (avec(0) - avec(1));
+				alt_rnhor(2) = bvec(2) / 2 / (avec(0) - avec(2));
+				alt_rnhor(0) = -sqrt(rsq) * sqrt(1 - rnhor(1) * rnhor(1) - rnhor(2) * rnhor(2));
+			}
+			else if (m > CHIMNEY_LINES/2 && rsq <= 1) {
+				alt_rnhor(1) = bvec(1) / 2 / (avec(0) - avec(1));
+				alt_rnhor(2) = bvec(2) / 2 / (avec(0) - avec(2));
+				alt_rnhor(0) = sqrt(rsq) * sqrt(1 - rnhor(1) * rnhor(1) - rnhor(2) * rnhor(2));
+			}
+			else alt_rnhor = rnhor;
+			alt_rnhor = rotation.t()*alt_rnhor;
+
+			// Insert final value ten times since gnuplot will skip values, and we don't want
+			// the horizons skipped.
+			for (int p = 1; p <= 10; p++) {
+				wdat << alt_rnhor(0) << " " << alt_rnhor(1) << " " << alt_rnhor(2) << endl;
+				wedat << norm(alt_rnhor) << " " << 0 << endl;
+			}
+		}
+
+		// Outside of the special case, the final value are the horizon calculated in the threads 
+		/// function
+		else {
+			for (int p = 1; p <= 10; p++) {
+				wdat << rnhor(0) << " " << rnhor(1) << " " << rnhor(2) << endl;
+				wedat << norm(rnhor) << " " << 0 << endl;
+			}
+		}
+
+		// Empty lines to indicate finish of a line
+		wdat << endl;
+		wedat << endl;
+	}
+
+	wdat.close(); wedat.close();
+}
+
+// This function computes the correction to stay on the chimney
+vec LSystem2d::chimneyCorr(double r, vec* wall) {
+
+	// Compute auxiliary quantities
+	vec grad = bvec + 2 * r*(avec % (*wall));
+	double Lambda = dot(*wall, grad);
+	double numer = sum(avec - avec % *wall % *wall);
+	double denom = dot(grad, grad) - Lambda*Lambda;
+
+	// If denom is zero, we reached the chimneytop
+	if (denom == 0.)
+		return zeros<vec>(3);
+
+	// Calculate correction
+	else
+		return (grad + (*wall)*Lambda)*numer / denom;
+}
+
+
 // Creates the output files for gnuplot
 void LSystem2d::gnufilescreate(string filename)
 {
@@ -448,7 +551,7 @@ void LSystem2d::gnufilescreate(string filename)
 	string filenamef = filename + "_f_plot.gnu";	
 	plotfile.open(filenamef.c_str(), fstream::out);
 	plotfile << "reset" << endl << endl
-		<< "set terminal wxt size 700,524 enhanced font 'Verdana,10' persist" 
+		<< "set terminal windows size 700,524 enhanced font 'Verdana,10'" 
 		<< endl 
 		<< "set border lw 1.5; unset key; set view 53,16" << endl
 		<< "set xrange [-0:1]; set xlabel \"r\"; set ylabel \"dr/dt\"; f(x) = 0"
@@ -469,10 +572,11 @@ void LSystem2d::gnufilescreate(string filename)
 	plotfile << endl;
 	plotfile.close();
 
+	// Make "***_e_plot.gnu" which plots the error in the thread
 	string filenamee = filename + "_e_plot.gnu";
 	plotfile.open(filenamee.c_str(), fstream::out);
 	plotfile << "reset" << endl << endl
-		<< "set terminal wxt size 700,524 enhanced font 'Verdana,10' persist" 
+		<< "set terminal windows size 700,524 enhanced font 'Verdana,10'" 
 		<< endl
 		<< "set border lw 1.5; unset key; set view 53,16" << endl
 		<< "set xrange [-0:1]; set xlabel \"r\";" 
@@ -484,51 +588,63 @@ void LSystem2d::gnufilescreate(string filename)
 		<< endl;
 	plotfile.close();
 
+	// Make "***_we_plot.gnu" which plots the error in the chimney
+	string filenamewe = filename + "_we_plot.gnu";
+	plotfile.open(filenamewe.c_str(), fstream::out);
+	plotfile << "reset" << endl << endl
+		<< "set terminal windows size 700,524 enhanced font 'Verdana,10' "
+		<< endl
+		<< "set border lw 1.5; unset key; set view 53,16" << endl
+		<< "set xrange [-0:1]; set xlabel \"r\";"
+		"set ylabel \"||f(n,r)||\"; f(x) = 0" << endl << endl
+		<< "plot \"" << filename
+		<< "_we.dat\" every :::0::0 lt 6 lw 2 lc rgb \"black\" with lines";
+	for (int m = 1; m < CHIMNEY_LINES; m++) {
+		plotfile << ", \"" << filename << "_we.dat\" every :::" << m << "::" << m
+			<< " lt 6 lw 2 lc rgb \"black\" with lines";
+	}
+	plotfile.close();
+
+	// Make "***_n_plot.gnu" which plots the thread and chimney
 	string filenamen = filename + "_n_plot.gnu";
 	plotfile.open(filenamen.c_str(), fstream::out);
 	plotfile << "reset" << endl << endl
 		<< "set termoption dashed" << endl
-		<< "set terminal wxt size 700,524 enhanced font 'Verdana,10' persist" 
+		<< "set terminal windows size 700,524 enhanced font 'Verdana,10'"
 		<< endl
-		<< "set border lw 1.5" << endl 
+		<< "set border lw 1.5" << endl
 		<< "unset key; unset tics; unset border" << endl
-		<< "set lmargin screen 0" << endl 
-		<< "set rmargin screen 1" << endl 
+		<< "set lmargin screen 0" << endl
+		<< "set rmargin screen 1" << endl
 		<< "set tmargin screen 1" << endl
-		<< "set bmargin screen 0" << endl 
-		<< "set size ratio -1" << endl 
+		<< "set bmargin screen 0" << endl
+		<< "set size ratio -1" << endl
 		<< "set view 53,16" << endl
-		<< "set parametric" << endl 
-		<< "set isosamples 30" << endl 
+		<< "set parametric" << endl
+		<< "set isosamples 30" << endl
 		<< "set hidden3d" << endl
-		<< "set xrange [-1.2:1.2]" << endl 
+		<< "set xrange [-1.2:1.2]" << endl
 		<< "set yrange [-1.2:1.2]" << endl
-		<< "set zrange [-1.2:1.2]" << endl 
-		<< "set urange [0:3.0/2*pi]" << endl 
+		<< "set zrange [-1.2:1.2]" << endl
+		<< "set urange [0:3.0/2*pi]" << endl
 		<< "set vrange [-pi/2:pi/2]" << endl << endl
-		<< "r = 1.0" << endl 
-		<< "fx(v,u) = r*cos(v)*cos(u)" << endl 
-		<< "fy(v,u) = r*cos(v)*sin(u)" << endl 
+		<< "r = 1.0" << endl
+		<< "fx(v,u) = r*cos(v)*cos(u)" << endl
+		<< "fy(v,u) = r*cos(v)*sin(u)" << endl
 		<< "fz(v)   = r*sin(v)" << endl << endl
-		<< "splot fx(v,u),fy(v,u),fz(v) lc rgb \"black\" lw 0.5, \"" 
+		<< "splot fx(v,u),fy(v,u),fz(v) lc rgb \"black\" lw 0.5, \""
 		<< filename << "_n.dat\" every 10:::0::0 lt 6 lw 2 "
-			"lc rgb \"black\" with lines, \""
-		<< filename << "_n.dat\" every 100:::1::1 lt 0 lw 3 lc rgb"
-			" \"black\" with lines, \""
-		<< filename << "_n.dat\" every :::2::2 pt 7 lw 5 lt 7 with points, \""
-		<< filename << "_n.dat\" every 100:::3::3 lc rgb \"black\""
-			" lt 7 lw 2 with lines, \""
-		<< filename << "_n.dat\" every :::4::4 pt 7 lw 5 lt 7  with points, \""
-		<< filename << "_n.dat\" every :::5::5 pt 7 lw 5 lt 7  with points, \""
-		<< filename << "_n.dat\" every 100:::6::6 lc rgb \"black\""
-			" lt 7 lw 2 with lines, \""
-		<< filename << "_n.dat\" every :::7::7 pt 7 lw 5 lt 7  with points, \""
-		<< filename << "_n.dat\" every :::8::8 pt 7 lw 5 lt 7  with points, \""
-		<< filename << "_n.dat\" every 100:::9::9 lc rgb \"black\""
-			" lt 7 lw 2 with lines, \""
-		<< filename << "_n.dat\" every :::10::10 pt 7 lw 5 lt 7  with points, \""
-		<< filename << "_n.dat\" every :::11::11 pt 7 lw 5 lt 7  with points" 
-		<< endl;
+		"lc rgb \"black\" with lines, \""
+		<< filename << "_n.dat\" every 10:::1::1 lt 0 lw 2 lc rgb"
+		" \"black\" with lines, \""
+		<< filename << "_n.dat\" every 100:::2::2 lt 10 lw 2 lc rgb"
+		" \"black\" with lines";
+
+	for (int m = 0; m < CHIMNEY_LINES; m++) {
+		plotfile << ", \"" << filename << "_w.dat\" every 6:::" << m << "::" << m << " lt 7 lw 1 lc rgb \"black\" with lines"; 
+	}
+		plotfile << endl;
 	plotfile.close();
 }
+
 

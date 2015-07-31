@@ -92,7 +92,11 @@ void randomMenu(void){
 	// Do the calculations and create .dat output files
 
 	cout << "Running algorithm..." << endl;
-	randsys.threads(reps, file);
+	vec nvec = zeros<vec>(3);
+	nvec(0) = 1;
+	
+	vec rnhor = randsys.threads(reps, file);
+	randsys.chimney(reps, file, rnhor);
 
 	// Create the .gnu files
 	randsys.gnufilescreate(file) ; 
@@ -120,7 +124,7 @@ void fileMenu(void){
 	    	cin >> infile;
 	}
 	
-    	vec as(3); 
+    vec as(3); 
 	vec bs(3);
 	
 	// Read input and print to console
@@ -143,7 +147,9 @@ void fileMenu(void){
 	cout << "Running algorithm..." << endl;
 
 	// Do the calculations and create .dat output files
-	insys.threads(reps, outfile);
+	vec rnhor = insys.threads(reps, outfile);
+	insys.chimney(reps, outfile, rnhor);
+	
 	// Create the .gnu files
 	insys.gnufilescreate(outfile); 
 
@@ -218,7 +224,8 @@ void PauliMenu(void){
 
 	// Do the calculations and create .dat output files
 	cout << "Running algorithm..." << endl;
-	paulisys.threads(reps, file);
+	vec rnhor = paulisys.threads(reps, file);
+	paulisys.chimney(reps, file, rnhor);
 
 	// Create the .gnu files
 	paulisys.gnufilescreate(file);
@@ -260,7 +267,9 @@ void realdiagMenu(void){
 
 	// Do calculations and create data output files
 	cout << "Running algorithm..." << endl;
-	specsys.threads(reps, file);
+	vec rnhor = specsys.threads(reps, file);
+	specsys.chimney(reps, file, rnhor);
+
 	// Create files for gnuplot
 	specsys.gnufilescreate(file);
 }
@@ -304,7 +313,7 @@ void pmzMenu(void){
 	gkssym(2,1) = reoff(2);
 
 	// Diagonalize gkssym
-    	vec as(3), bs(3); 
+    vec as(3), bs(3); 
 	mat rotation(3,3);
 	eig_sym(as,rotation,gkssym);
 
@@ -336,7 +345,9 @@ void pmzMenu(void){
 	
 	// Do calculations and create data output files
 	cout << "Running algorithm..." << endl;
-	paulisys.threads(reps, file);
+	vec rnhor = paulisys.threads(reps, file);
+	paulisys.chimney(reps, file, rnhor);
+
 	// Create files for gnuplot
 	paulisys.gnufilescreate(file);
 }

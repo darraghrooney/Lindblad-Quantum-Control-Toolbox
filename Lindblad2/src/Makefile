@@ -28,5 +28,5 @@ Lindblad2: $(OBJ)
 
 clean:
 	rm -r -f $(ODIR)
-	rm -f $(IDIR)/*~ *.dat *.gnu *~ core 
+	rm -f $(IDIR)/*~ *.dat *.gnu *.txt *~ *stackdump core 
 
