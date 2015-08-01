@@ -7,19 +7,14 @@ function[A,b,rinf] = A_b_rinf(w)
 
 % Calculate A(w)
 
-A=zeros(2,2);
-
-A(1,1)=1/2*(2*w(1,2)+2*w(2,1)+w(3,1)+w(3,2)); 
-A(2,2)=1/2*(2*w(1,3)+2*w(2,3)+w(3,1)+w(3,2));
-A(1,2)=1/2/sqrt(3)*(2*w(2,1)-2*w(1,2)+2*w(1,3)-2*w(2,3)+w(3,1)-w(3,2)); 
-A(2,1)=sqrt(3)/2*(w(3,1)-w(3,2));
+Omega = w -diag(sum(w)); 
+Pi = [[1,-1,0]/sqrt(2); [1,1,-2]/sqrt(6)];
+A = -Pi*Omega*Pi';
 
 % Calculate b(w)
 
-b=zeros(2,1);
-
-b(1)=1/3*(2*w(1,2)-2*w(2,1)+w(1,3)-w(3,1)+w(3,2)-w(2,3)); 
-b(2)=1/sqrt(3)*(w(1,3)-w(3,1)+w(2,3)-w(3,2));
+iota = [1,1,1]'/3;
+b = Pi*Omega*iota;
 
 % Calculate rinf = A^-1 *b
 

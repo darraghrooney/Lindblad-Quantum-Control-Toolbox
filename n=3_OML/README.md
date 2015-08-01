@@ -25,7 +25,7 @@ Given a discrete set of control flags, one can plot the arcs that contribute to 
 
 ### List of .m files:
 
-* `rand_Ls.m`, `rand_GKS.m` and `rand_w.m` are all used for generating randomized system data. The first produces a specified number of Lindblad operators, the second a GKS matrix and the third a w-vector. `flag_gen.m` is a function for producing a random flag.
+* `rand_Ls.m`, `rand_GKS.m`, `rand_w.m` and `rand_stdLs.m` are all used for generating randomized system data. The first produces a specified number of Lindblad operators, the second a GKS matrix and the third a w-vector. The fourth generates seven standard Lindblad operators: six jump operators and one de-phasing operator. `flag_gen.m` is a function for producing a random flag.
 
 * `GKStoL.m`, `GKStow.m`, `LtoGKS.m` and `Ltow.m` are conversion functions for converting between GKS, the Lindblad ops, and the w-vector. `principal_w.m` calculates the w-vector for a set of Lindblad operators and the identity flag. `order_rates.m` rearranges a w-vector so that it's asymptotic state is in the primary sector.
 
@@ -45,8 +45,10 @@ Given a discrete set of control flags, one can plot the arcs that contribute to 
 
 * `tangents.m` discretizes the flag space, and plots a v-vector for each flag. `tangents_with_princ.m` does the same but adds in the principal v-vectors.
 
+* `std_bound_test.m` is intended for standard Lindblad ops. It compares the stat states of one-parameter rotations with a specified number of random flags.
+
 * Helper functions: `flag_inc.m` is an increment function for sweeping through the space of flags. `gPaulis.m` generates the eight generalized Pauli matrices, while `su3off_basis` only generated the six non-diagonal ones. `S3gen.m` generates a rep of the S3 group onto 2x2 matrices, i.e. the linear transformations under which bar{T} is invariant. `rot_curves.m` take a trajectory through bar{T} and calculates the five images of the curve under the S3-action. 
 	
 ### Gallery folder:
 
-The Gallery contains examples of the plotting functions for seven different Lindblad systems. The system data is stored in `Example_data.txt`. For systems 1-5, the result of `AE3_arcs.m`, `AE3_fill.m`, `trajectories.m` are plotted, as well as a combo graph of the AE3 boundary and B03 arcs. For system 1, three examples of `tangents_with_princ.m` are given, one example each is given for system 4 and 5. Systems 6 and 7 are disconnected and show the result of `disconnected.m`. 
+The Gallery contains examples of the plotting functions for ten different Lindblad systems. The system data is stored in `Example_data.txt`. For systems 1-5, the result of `AE3_arcs.m`, `AE3_fill.m`, `trajectories.m` are plotted, as well as a combo graph of the AE3 boundary and B03 arcs. For system 1, three examples of `tangents_with_princ.m` are given, one example each is given for system 4 and 5. Systems 6 and 7 are disconnected and show the result of `disconnected.m`.  Systems 8-10 have only jump and de-phasing ops and show the results of `std_bound_test.m`.

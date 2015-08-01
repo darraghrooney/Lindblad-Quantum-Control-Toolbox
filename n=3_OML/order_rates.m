@@ -21,9 +21,6 @@ if J1 + J2 + J3 == 0
 % Check to see that the input rates are ordered
 
 elseif J3 > J2 || J2 > J1
-	disp('Input rates not ordered:');
-	disp([J1,J2,J3]);
-	disp('Re-ordering w_ij');
 
 	% Re-order
 

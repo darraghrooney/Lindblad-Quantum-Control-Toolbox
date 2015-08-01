@@ -4,10 +4,11 @@
 % arcs.	Two grid sizes are required: one for the candidate arcs, and one for the final
 % boundary. If plot_switch is 1, the boundary is plotted.
 
-function [boundary, boundaryE] = AE3_boundary(w, grid_size1, grid_size2, plot_switch)
+function [boundary, boundaryE] = AE3_boundary(L, grid_size1, grid_size2, plot_switch)
 
 % Fetch candidate arcs 
-curves = AE3_arcs(w,grid_size1,0);
+w = Ltow(L,eye(3));
+curves = AE3_arcs(L,grid_size1,0,0);
 
 % Initialize boundary. First row is distance from origin, second row is the cw angle from
 % the +y-axis, third row represents the candidate arc (1 through 15).

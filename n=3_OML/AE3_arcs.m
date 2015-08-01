@@ -66,8 +66,12 @@ end
 if (plot_switch)
 	hold on
 	for j = 1:pair_count
-		plot(curves(:,1,j),curves(:,2,j),'b');
-	end
+    if j<=15
+  		plot(curves(:,1,j),curves(:,2,j),'b');
+    else
+	 		plot(curves(:,1,j),curves(:,2,j),'g');
+    end
+ end
 
 
 	% Adapt plot window
