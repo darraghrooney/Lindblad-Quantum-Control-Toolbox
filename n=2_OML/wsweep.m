@@ -5,7 +5,7 @@
 % Note that w_ij := the norm-squared of sum(k) wf_i L_k wf_k, where L_k are the
 % Lindblad operators and wf_i are the basis vectors of the flag.
 
-function [w12, w21, A] = wsweep( mesh )	% A mesh size around 40 I think is optimal
+function [w12, w21, A] = wsweep( mesh )	  % mesh size around 40 I think is optimal
 
 % Initialize matrices
 w12 = zeros(mesh+1,mesh+1);

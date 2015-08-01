@@ -34,7 +34,7 @@ p4=-ones(samp2,samp2);
 
 for j=1:samp2
 	for k=1:min(j+1,samp2)
-
+    
 		% Fill out values of Bj		
 		B1=2*sqrt(a2(j)*a3(k))*B;
 		B2=2*sqrt(a1*a3(k))*B;
