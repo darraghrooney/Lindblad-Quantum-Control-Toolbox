@@ -10,14 +10,15 @@ L =
 
 Flag used was the principal flag.
 
-Example1_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
-Example1_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 400, grid_size2 = 400, as well as B03_arcs.m with
-	grid_size1 = 400, grid_size2 = 400
+Example1_AE3arcs.pdf: used AE3_arcs.m with grid_size1 = 20
+Example1_AE3arcs_plus.pdf: used AE3_arcs.m with grid_size1 = 20 and uno = 10
+Example1_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
+	grid_size1 = 200, grid_size2 = 200
 Example1_fills.png: used AE3_fill.m with grid_size1 = 40 and B03_fill.m with grid_size1,2,3 = 400
 Example1_twp1.png:  used tangents_with_princ.m using gno = 6 and x = [0;0]
-Example1_twp2.png:  used tangents_with_princ.m using gno = 6 and x = [1;1/sqrt(3)]
-Example1_twp3.png:  used tangents_with_princ.m using gno = 6 and x = [0;1/sqrt(3)]
-Example1_traj.png:  used trajectories.m with gno = 10
+Example1_twp2.png:  used tangents_with_princ.m using gno = 6 and x = [1/sqrt(2);1/sqrt(6)]
+Example1_twp3.png:  used tangents_with_princ.m using gno = 6 and x = [0;1/sqrt(6)]
+Example1_traj.png:  used trajectories.m with gno = 20
 
 
 Example 2
@@ -25,39 +26,41 @@ Example 2
 
 Four Lindblad operators.
 
+                                                                                    
 L1 =
 
-(0.4580018402687731,0) 			(-0.7608556775286631,0.8279833114963254) 	(-0.4346826618893302,1.588700617847633) 
-(0.3193019423465014,0.4385325955305862)	(-0.6331998756236776,0.2137442446824539) 	(-0.2213228768832163,1.286845709109237)
-(-0.9229646548901123,0.724618459552965)	(-0.6678878995803645,0.5888835739444263) 	(0.1751980353549047,-0.2137442446824542)
+   11.60687 +  0.00000i  -10.04862 +  8.86062i   -0.55852 +  4.28033i
+  -21.60081 +  2.05276i   -7.95459 +  1.36461i   -2.78875 + 20.91333i
+   -9.06879 +  9.23940i   -8.80825 +  1.21886i   -3.65228 -  1.36461i
 
 L2 =
 
-(0.4483860311757818,0)				(-0.250704835620422,0.6353194029409587)	(-0.9376289846960522,0.7594339065116819)   
-(-0.8419489911958381,0.1255110605201483) 	(-0.6037837349700002,0.1213247802382959)(-0.306498804494599,0.5780916737638014)  
-(-0.2223707968408206,0.7462654554231074) 	(-1.278238437778893,0.1218406089122955)	(0.1553977037942184,-0.1213247802382959)
+   17.8879 -  0.0000i   43.1454 - 29.2844i   14.7192 - 13.3428i
+   36.1098 -  8.5212i   -7.5380 -  8.6765i   24.5811 -  4.5474i
+    7.6080 - 13.3550i   17.0918 - 10.2639i  -10.3499 +  8.6765i
 
 L3 =
 
-(0.01189481256676416,0) 			(-0.06230894729473836,0.01404523247069341)(-0.04830900362199514,-0.005088176327405387) 
-(-0.01521191463645765,0.006702153740902613)   	(-0.0037860973390234,0.003290259456523321) (-0.04249170973737747,0.02695884269687052) 
-(-0.008168142032907805,0.004092283143837968) 	(-0.01642778547758014,0.0140492208241183)(-0.00810871522774077,-0.003290259456523322)
+   0.470055 + 0.000000i  -0.464584 + 0.158141i   0.020308 + 0.838435i
+  -0.732957 + 1.073389i  -0.486731 - 0.430237i  -1.081117 + 0.201665i
+  -0.234946 + 0.381491i  -0.764859 + 0.075519i   0.016676 + 0.430237i
 
 L4 =
 
-(4.380621214730494,0)  			(-12.49807821086242,0.1973394887324158)	(-9.097279268837863,-8.672358199524581)
-(-3.407415385587661,0.638606080233731)  (-3.295374243271347,-1.796705276906815)	(-11.1867844840123,6.733385350928476) 
-(-15.1607826075691,2.027016499082452)  	(-12.77482337313963,1.995524482695881) 	(-1.085246971459143,1.796705276906817)
+  1.6409e-003 + 1.0842e-019i  -3.9685e-002 + 1.5593e-002i  -6.2537e-004 + 4.5795e-002i
+  -4.9979e-003 + 5.1595e-002i  -1.1169e-003 - 2.1116e-002i  -3.3177e-002 + 2.6576e-002i
+  -5.2515e-002 + 3.1913e-002i  2.7416e-003 + 3.6625e-002i  -5.2393e-004 + 2.1116e-002i
 
-Flag used was the principal flag.
+Flag used was the identity flag.
 
 
-Example2_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
-Example2_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 400, grid_size2 = 400, as well as B03_arcs.m with
-	grid_size1 = 400, grid_size2 = 400
-Example2_fills.png: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 800
+Example2_AE3arcs.pdf: used AE3_arcs.m with grid_size1 = 20
+Example2_AE3arcs.pdf: used AE3_arcs_plus.m with grid_size1 = 20 and uno = 10
+Example2_AE3bound_B03arcs.pdf: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
+	grid_size1 = 200, grid_size2 = 200
+Example2_fills.pdf: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 800
 Example2_tang_w_princ.png:  used tangents_with_princ.m using gno = 6 and x = [0.6;0.4]
-Example2_traj.png:  used trajectories.m with gno = 10
+Example2_traj.png:  used trajectories.m with gno = 20
 
 Example 3
 ---------
@@ -71,11 +74,12 @@ L =
 
 Flag used was the identity.
 
-Example3_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
-Example3_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
+Example3_AE3arcs.pdf: used AE3_arcs.m with grid_size1 = 20
+Example3_AE3arcs_plus.pdf: used AE3_arcs.m with grid_size1 = 20 and uno = 10
+Example3_AE3bound_B03arcs.pdf: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
 	grid_size1 = 200, grid_size2 = 200
-Example3_fills.png: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 200
-Example3_traj.png:  used trajectories.m with gno = 20
+Example3_fills.pdf: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 200
+Example3_traj.pdf:  used trajectories.m with gno = 20
 
 Example 4
 ---------
@@ -89,7 +93,8 @@ L =
 
 Flag used was the identity.
 
-Example4_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
+Example4_AE3arcs.pdf: used AE3_arcs.m with grid_size1 = 20
+Example4_AE3arcs_plus.pdf: used AE3_arcs.m with grid_size1 = 20 and uno = 10
 Example4_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
 	grid_size1 = 200, grid_size2 = 200
 Example4_fills.png: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 200
@@ -108,12 +113,13 @@ L =
 
 Flag used was the identity.
 
-Example5_AE3arcs.png: used AE3_arcs.m with grid_size1 = 20
-Example5_AE3bound_B03arcs.png: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
+Example5_AE3arcs.pdf: used AE3_arcs.m with grid_size1 = 20
+Example5_AE3arcs_plus.pdf: used AE3_arcs.m with grid_size1 = 20 and uno = 10
+Example5_AE3bound_B03arcs.pdf: used AE3_boundary.m with grid_size1 = 200, grid_size2 = 200, as well as B03_arcs.m with
 	grid_size1 = 200, grid_size2 = 200
 Example5_fills.png: used AE3_fill.m with grid_size1 = 20 and B03_fill.m with grid_size1,2,3 = 200
-Example5_twp.png:  used tangents_with_princ.m with gno = 6
-Example5_traj.png:  used trajectories.m with gno = 20
+Example5_twp.pdf:  used tangents_with_princ.m with gno = 6
+Example5_traj.pdf:  used trajectories.m with gno = 20
 
 
 Example 6
@@ -137,3 +143,44 @@ w =
 7	0	0
 0	0	0
 
+Example 8
+---------
+Standard Lindblad ops, with 100 random flags
+
+Gammas = 
+
+ 0 11  9
+ 1  0 12
+17 0  0
+
+Nus = 
+
+17  12  4
+
+Example 9
+---------
+Standard Lindblad ops, with 100 random flags (unfolded) and 400 flags (folded)
+
+Gammas = 
+
+0  9 21
+1  0 17
+3 23  0 
+
+Nus = 
+
+23  29  8
+
+Example 10
+---------
+Standard Lindblad ops, with 100 random flags (unfolded) and 400 flags (folded)
+
+Gammas = 
+
+ 0 29  5
+ 5  0 23
+16  3  0 
+
+Nus = 
+
+24  5  21
