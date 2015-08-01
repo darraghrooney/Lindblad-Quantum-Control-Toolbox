@@ -506,9 +506,10 @@ void LSystem2d::chimney(int mesh, string file, vec rnhor) {
 			}
 		}
 
-		// Outside of the special case, the final value are the horizon calculated in the threads 
-		/// function
-		else {
+		// Outside of the special case, the final value is often the horizon calculated in the threads 
+		// function. If the last point in the chimney line is not sufficiently close to this horizon,
+		// the final value is omitted.
+		else if (norm(rnhor - rwvec) < 0.1){
 			for (int p = 1; p <= 10; p++) {
 				wdat << rnhor(0) << " " << rnhor(1) << " " << rnhor(2) << endl;
 				wedat << norm(rnhor) << " " << 0 << endl;
