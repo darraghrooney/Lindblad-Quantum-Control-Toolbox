@@ -2,7 +2,7 @@
 
 This is a program for analyzing the fast control of a 2d Lindblad quantum control system. The goals are: (1) Find two "threads" in the Bloch ball: the points on concentric surfaces where the (outward) radial velocity is maximized or minimized. The minimum radial velocity is always non-positive; the maximum velocity is positive at the center, and decreases monotonically as one moves outward. At some point before the outermost sphere, the maximum velocity crosses zero - this point is called the "horizon". (2) Find the "chimney", the region where outward velocity is positive.  
 
-In some special cases, there are bifurcations (either thread may split into three, or a third thread may pop up independently). These threads are detected by the program and dealt with accordingly. If the maximum-velocity thread bifurcates, there may be an alternate horizon (actually, a pair of equal-radius horizons). 
+In some special cases, there are bifurcations (either thread may split into three, or a third thread may pop up independently, or a plane of CPs emerges from a thread). These threads are detected by the program and dealt with accordingly. If the maximum-velocity thread bifurcates, there may be an alternate horizon (actually, a pair of equal-radius horizons). 
 
 ### Installation
  

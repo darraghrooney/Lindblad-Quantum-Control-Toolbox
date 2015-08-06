@@ -22,6 +22,7 @@
 #include "LSystem2d.h"
 #define CHIMNEY_TOL 0.003 
 #define CHIMNEY_LINES 36
+#define SPOKES 48
 
 using namespace std;
 using namespace arma;
@@ -234,7 +235,7 @@ vec LSystem2d::threads(int mesh, string file)
 				double r = (double)k/(double)mesh; 
 				vec nvec("0 0 0");
 				nvec(0) = sqrt(1-pow(rstar/r,2)); 
-				nvec(1)=c1/r; 
+				nvec(1) = c1/r; 
 				nvec(2) = c2/r;
 				vec rnvec = r*rotation.t()*nvec;
 
@@ -250,7 +251,7 @@ vec LSystem2d::threads(int mesh, string file)
 				double r = (double)k/(double)mesh; 
 				vec nvec("0 0 0");
 				nvec(0) = -sqrt(1-pow(rstar/r,2)); 
-				nvec(1)=c1/r; 
+				nvec(1) = c1/r; 
 				nvec(2) = c2/r;
 				vec rnvec = r*rotation.t()*nvec;
 				ndat << rnvec(0) << " " << rnvec(1) << " " 
@@ -286,7 +287,7 @@ vec LSystem2d::threads(int mesh, string file)
 				double r = (double)k/(double)mesh; 
 				vec nvec("0 0 0");
 				nvec(1) = sqrt(1-pow(rstar/r,2)); 
-				nvec(0)=c1/r; 
+				nvec(0) = c1/r; 
 				nvec(2) = c2/r;
 				vec rnvec = r*rotation.t()*nvec;
 				
@@ -303,7 +304,7 @@ vec LSystem2d::threads(int mesh, string file)
 				double r = (double)k/(double)mesh; 
 				vec nvec("0 0 0");
 				nvec(1) = -sqrt(1-pow(rstar/r,2)); 
-				nvec(0)=c1/r; 
+				nvec(0) = c1/r; 
 				nvec(2) = c2/r;
 				vec rnvec = r*rotation.t()*nvec;
 
@@ -370,6 +371,101 @@ vec LSystem2d::threads(int mesh, string file)
 			ndat << endl;
 		}
 	}
+
+	// Special case 4: a1 = a2 and b1 = b2 = 0
+	if (avec(0) == avec(1) && bvec(0) == 0 && bvec(1) == 0){
+
+		// Compute source of new threads
+		double c = bvec(2)/2/(avec(0)-avec(2)); 
+		
+		// Only matters if c < 1
+		if (abs(c) < 1){
+			
+			// Loop over spokes
+			for (int m = 0; m < SPOKES; m++){
+
+				// Calculate spoke ending
+				double c12 = sqrt(1-c*c);
+				double c1 = c12*cos(2*PI*m/SPOKES);
+				double c2 = c12*sin(2*PI*m/SPOKES);	
+
+				
+				vec cvec("0 0 0");
+				cvec(2) = c;
+				
+				// Loop over points in spoke
+				for (int k = 0; k <= mesh; k++ ) {
+
+					// Calculate point
+					double medc1 = c1*(1-abs(2*k/mesh-1));
+					double medc2 = c2*(1-abs(2*k/mesh-1));
+					cvec(0) = medc1;
+					cvec(1) = medc2;
+					vec rnvec = rotation.t()*cvec;
+				
+					// Print new values to _n file
+					ndat << rnvec(0) << " " << rnvec(1) << " " << rnvec(2) << endl;
+				}		
+			}
+			
+			// Calculate rdot and print
+			for (int k = ceil(c*(double)mesh); k <= mesh; k++) {
+				double r = k/mesh;
+				double fr = -(avec(0) + avec(2))*r + bvec(2)*bvec(2)/4/r/(avec(0) - avec(2));
+				fdat << r << " " << fr << endl;
+			}
+			fdat << endl; 
+			ndat << endl;
+		}
+	}
+
+	// Special case 5: a2 = a3 and b2 = b3 = 0
+	if (avec(1) == avec(2) && bvec(1) == 0 && bvec(2) == 0){
+
+		// Compute source of new threads
+		double c = bvec(0)/2/(avec(2)-avec(0)); 
+		
+		// Only matters if c < 1
+		if (abs(c) < 1){
+			
+			// Loop over spokes
+			for (int m = 0; m < SPOKES; m++){
+
+				// Calculate spoke ending
+				double c12 = sqrt(1-c*c);
+				double c1 = c12*cos(2*PI*m/SPOKES);
+				double c2 = c12*sin(2*PI*m/SPOKES);	
+
+				
+				vec cvec("0 0 0");
+				cvec(0) = c;
+				
+				// Loop over points in spoke
+				for (int k = 0; k <= mesh; k++ ) {
+
+					// Calculate point
+					double medc1 = c1*(1-abs(2*k/mesh-1));
+					double medc2 = c2*(1-abs(2*k/mesh-1));
+					cvec(1) = medc1;
+					cvec(2) = medc2;
+					vec rnvec = rotation.t()*cvec;
+				
+					// Print new values to _n file
+					ndat << rnvec(0) << " " << rnvec(1) << " " << rnvec(2) << endl;
+				}		
+			}
+			
+			// Calculate rdot and print
+			for (int k = ceil(c*(double)mesh); k <= mesh; k++) {
+				double r = k/mesh;
+				double fr = -(avec(0) + avec(2))*r + bvec(0)*bvec(2)/4/r/(avec(2) - avec(0));
+				fdat << r << " " << fr << endl;
+			}
+			fdat << endl; 
+			ndat << endl;
+		}
+	}
+	
 	// Add dummy line to _f file since gnuplot will complain if not there
 	else 	
 		fdat << 0 << " " << 0 << endl << endl;
@@ -477,13 +573,17 @@ void LSystem2d::chimney(int mesh, string file, vec rnhor) {
 
 		// In one special case, the final values are not necessarily the 
 		// typical horizon.
-		if (bvec(0) == 0 && avec(0) > avec(1)) {
-
+		double rn2t = bvec(1) / 2 / (avec(0) - avec(1));
+		double rn3t = bvec(2) / 2 / (avec(0) - avec(2));
+		double thresh = sqrt(rn2t*rn2t + rn3t*rn3t);
+		if (bvec(0) == 0 && avec(0) > avec(1) && thresh < norm(rnhor)) {
+			
 			// Calculate alternate horizons
 			vec alt_rnhor = zeros<vec>(3);
 			double rsq = bvec(1) * bvec(1) / 4 / (avec(0) - avec(1)) / (avec(1) + avec(2));
 			rsq += bvec(2) * bvec(2) / 4 / (avec(0) - avec(2)) / (avec(1) + avec(2));
 
+			
 			// Exactly which horizon to insert depends on which line
 			if (m > 0 && m < CHIMNEY_LINES/2 && rsq <= 1) {
 				alt_rnhor(1) = bvec(1) / 2 / (avec(0) - avec(1));
@@ -638,7 +738,7 @@ void LSystem2d::gnufilescreate(string filename)
 		"lc rgb \"black\" with lines, \""
 		<< filename << "_n.dat\" every 10:::1::1 lt 0 lw 2 lc rgb"
 		" \"black\" with lines, \""
-		<< filename << "_n.dat\" every 100:::2::2 lt 10 lw 2 lc rgb"
+		<< filename << "_n.dat\" every 100:::2::2 lt 10 lw 1 lc rgb"
 		" \"black\" with lines";
 
 	for (int m = 0; m < CHIMNEY_LINES; m++) {
