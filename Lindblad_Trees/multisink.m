@@ -1,7 +1,7 @@
 % For a Lindblad system with m1>0 sinks, there are m1 constraints on the
 % eigenvalues (including the constraint they add to one). This function
 % finds these constraints. The constraint matrix is such that the inner product
-% of any column, with any column of B, is zero. Where d(lambda)/dt = B*lambda
+% of any column, with any column of Omega, is zero. Where d(lambda)/dt = Omega*lambda
 
 % Such a matrix is not unique, but this one is chosen so that the upper m1 rows
 % form a multiple of the identity matrix. This multiple happens to be the sum of
@@ -13,7 +13,7 @@
 % obeying the following selection rule: the (j,k) element is formed only from
 % multi-trees where the node j is in the tree with root k.
 
-function[constraints,B] = multisink(m1,m2,w)
+function[constraints,Omega] = multisink(m1,m2,w)
 
 	% Check that m1 and m2 add up to dim(w)
 	if (size(w,1) != m1+m2 && size(w,2) != m1+m2)
@@ -28,7 +28,7 @@ function[constraints,B] = multisink(m1,m2,w)
 	end
 
 
-	B = B_mat(w);
+Omega = Omega(w);
 
 	% Initializing constraint coefficients
 	constraints = zeros(m1+m2,m1);
