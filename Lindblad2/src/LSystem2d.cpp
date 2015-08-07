@@ -733,7 +733,7 @@ void LSystem2d::gnufilescreate(string filename)
 		<< "fx(v,u) = r*cos(v)*cos(u)" << endl
 		<< "fy(v,u) = r*cos(v)*sin(u)" << endl
 		<< "fz(v)   = r*sin(v)" << endl << endl
-		<< "splot fx(v,u),fy(v,u),fz(v) lc rgb \"black\" lw 0.5, \""
+		<< "splot fx(v,u),fy(v,u),fz(v) lc rgb \"grey\" lw 0.5, \""
 		<< filename << "_n.dat\" every 10:::0::0 lt 6 lw 2 "
 		"lc rgb \"black\" with lines, \""
 		<< filename << "_n.dat\" every 10:::1::1 lt 0 lw 2 lc rgb"

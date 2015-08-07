@@ -56,6 +56,14 @@ This folder contains code with three purposes:
 
 	The ODE above can be re-written dr/dt = ( w12 - w21) - r ( w12 + w21) where w12 and w21 are functions of n1, n2 and n3. These functions are derived from the specific GKS matrix of the system. `wsweep.m` calculates a random GKS matrix and then parametrically plots w12 and w21 as n1, n2 and n3 vary across S1. Some pretty plots can be generated from this function.
 
+* `find_sources.m`
+
+	Searches for alternate threads that don't start at the completely mixed state. 60% or so of systems don't have one, but the rest have one or two. Involves solving a degree-six polynomial.
+
+* `source_survey.m`
+
+	Surveys a given number of randomized systems looking for alternate threads. Meant to find frequencies. Results: ~60% have none, ~30% have one, ~10% have two.
+
 ### Examples folder:
 
 Examples of the plots for `rdot.m`, `bsweep.m`, `asweep.m` and `wsweep.m` are included. The specific parameters that gave these plots are stored in the text file `Example_parameters.txt`.
