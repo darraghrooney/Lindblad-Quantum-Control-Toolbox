@@ -199,13 +199,7 @@ vec LSystem2d::threads(int mesh, string file)
 			fdat << r << " " << rd << endl;
 
 			// Compute the error and print to _e file
-			lambda = dot(bvec,nvec)/2 + r*dot(nvec,diagmat(avec)*nvec);
-			poly = 1;
-			poly -= pow(bvec(0)/(lambda-r*avec(0))/2,2);
-			poly -= pow(bvec(1)/(lambda-r*avec(1))/2,2);
-			poly -= pow(bvec(2)/(lambda-r*avec(2))/2,2);
-			edat << r << " " << norm(cross(nvec,
-				bvec+2*r*diagmat(avec)*nvec),2) << endl;
+			edat << r << " " << norm(cross(nvec, bvec+2*r*diagmat(avec)*nvec),2) << endl;
 		}
 
 		// Need blank lines to indicate finished loop
@@ -588,21 +582,26 @@ void LSystem2d::chimney(int mesh, string file, vec rnhor) {
 			if (m > 0 && m < CHIMNEY_LINES/2 && rsq <= 1) {
 				alt_rnhor(1) = bvec(1) / 2 / (avec(0) - avec(1));
 				alt_rnhor(2) = bvec(2) / 2 / (avec(0) - avec(2));
-				alt_rnhor(0) = -sqrt(rsq) * sqrt(1 - rnhor(1) * rnhor(1) - rnhor(2) * rnhor(2));
+				alt_rnhor(0) = - sqrt(rsq - alt_rnhor(1) * alt_rnhor(1) - alt_rnhor(2) * alt_rnhor(2));
 			}
 			else if (m > CHIMNEY_LINES/2 && rsq <= 1) {
 				alt_rnhor(1) = bvec(1) / 2 / (avec(0) - avec(1));
 				alt_rnhor(2) = bvec(2) / 2 / (avec(0) - avec(2));
-				alt_rnhor(0) = sqrt(rsq) * sqrt(1 - rnhor(1) * rnhor(1) - rnhor(2) * rnhor(2));
+				alt_rnhor(0) = sqrt(rsq - alt_rnhor(1) * alt_rnhor(1) - alt_rnhor(2) * alt_rnhor(2));
 			}
 			else alt_rnhor = rnhor;
 			alt_rnhor = rotation.t()*alt_rnhor;
 
 			// Insert final value ten times since gnuplot will skip values, and we don't want
 			// the horizons skipped.
-			for (int p = 1; p <= 10; p++) {
-				wdat << alt_rnhor(0) << " " << alt_rnhor(1) << " " << alt_rnhor(2) << endl;
-				wedat << norm(alt_rnhor) << " " << 0 << endl;
+			if (norm(alt_rnhor - rwvec) < norm(rnhor - rwvec)){
+				rnhor = alt_rnhor;
+			}	
+			if (norm(rnhor - rwvec) < 0.1){
+				for (int p = 1; p <= 10; p++) {
+					wdat << alt_rnhor(0) << " " << alt_rnhor(1) << " " << alt_rnhor(2) << endl;
+					wedat << norm(alt_rnhor) << " " << 0 << endl;
+				}
 			}
 		}
 
