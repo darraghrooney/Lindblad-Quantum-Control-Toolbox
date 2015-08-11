@@ -45,10 +45,10 @@ pair_count = 6*(un_no+1)*(6*(un_no+1)-1)/2;
 curves = zeros(grid_size+1,2,pair_count);
 count = 1;
 
-% Sweep over pairs of vertices
+% Sweep over pairs of vertices in the primary flag
 
-for j = 1:(6*un_no+6)
-for k = (j+1):(6*un_no+6)
+for j = 1:5
+for k = (j+1):6
 
 	% Sweep over grid
 	for l = 0:grid_size
@@ -58,6 +58,28 @@ for k = (j+1):(6*un_no+6)
 		curves(l+1,:,count) = Ain\bin; 
 	end
 	count += 1;
+end
+end
+
+% Sweep over the rest of pairs
+
+for j = 1:(6*un_no+6)
+for k = (j+1):(6*un_no+6)
+
+  if (j <= 6 && k <=6)
+    continue;
+  else 
+
+	% Sweep over grid
+	for l = 0:grid_size
+		s = l/grid_size;
+		Ain = (1-s)*As(:,:,j) + s*As(:,:,k);
+		bin = (1-s)*bs(:,j) + s*bs(:,k);
+		curves(l+1,:,count) = Ain\bin; 
+	end
+	count += 1;
+  
+  end
 end
 end
 
