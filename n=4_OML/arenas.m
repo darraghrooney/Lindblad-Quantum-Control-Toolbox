@@ -13,6 +13,10 @@ plot3([0,0],[0,0],[-sqrt(3/4),1/sqrt(12)],'k')
 plot3([1/sqrt(2),-1/3/sqrt(2)],[1/sqrt(6),-1/3/sqrt(6)],[1/sqrt(12),-1/3/sqrt(12)],'k')
 plot3([-1/sqrt(2),1/3/sqrt(2)],[1/sqrt(6),-1/3/sqrt(6)],[1/sqrt(12),-1/3/sqrt(12)],'k')
 plot3([0,0],[-sqrt(2/3),sqrt(2)/3/sqrt(3)],[1/sqrt(12),-1/6/sqrt(3)],'k')
+plot3([-1,1]/2/sqrt(2),[-1,1]/2/sqrt(6),[1,-1]/sqrt(12),'k')
+plot3([0,0], [1,-1]/sqrt(6), [1,-1]/sqrt(12),'k')
+plot3([-1,1]/2/sqrt(2), [1,-1]/2/sqrt(6),[-1,1]/sqrt(12),'k')
+
 
 % Plot inner edges on the boundary
 plot3([1/sqrt(2),-1/2/sqrt(2)],[1/sqrt(6),-1/2/sqrt(6)],[1,1]/sqrt(12),'k')
