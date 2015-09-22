@@ -1,22 +1,22 @@
 /* 
- * Lindblad2
+ * TwinBlad
  *
  * Copyright (c) 2014 - 2015 Patrick Rooney (darraghrooney@gmail.com)
  *
- * This file is part of Lindblad2.
+ * This file is part of TwinBlad.
  *
- * Lindblad2 is free software: you can redistribute it and/or modify
+ * TwinBlad is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Lindblad2 is distributed in the hope that it will be useful,
+ * TwinBlad is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Lindblad2.  If not, see <http://www.gnu.org/licenses/>.
+ * along with TwinBlad.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <iostream>
@@ -36,13 +36,13 @@ char mainMenu(void){
 	// Secondary menu is chosen based on a character input from console
 	char choice;
 
-	cout << endl << "/*** Lindblad2 Copyright (C) 2015 Patrick Rooney ***/" << endl << endl;
+	cout << endl << "/*** TwinBlad Copyright (C) 2015 Patrick Rooney ***/" << endl << endl;
     	cout << "This program comes with ABSOLUTELY NO WARRANTY. This is free software, "
 		"and you are welcome to redistribute it under certain conditions. "
 		"For details, consult the GNU Personal License "
 		"that came with this software. " << endl << endl;
 
-    	cout << "Welcome to Lindblad2. " << endl;
+    	cout << "Welcome to TwinBlad. " << endl;
 	cout << "This is a program for optimizing quantum control of "
 			"n=2 Lindblad systems." << endl << endl;
 	cout << "Press 'r' for random GKS matrix." << endl;

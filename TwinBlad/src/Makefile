@@ -13,7 +13,7 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 _OBJ = Central.o Menus.o LSystem2d.o Numerics.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-all: prep Lindblad2
+all: prep TwinBlad
 
 prep:
 	mkdir -p $(ODIR)
@@ -21,7 +21,7 @@ prep:
 $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c $^ -o $@ $(CFLAGS)
 
-Lindblad2: $(OBJ)
+TwinBlad: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean

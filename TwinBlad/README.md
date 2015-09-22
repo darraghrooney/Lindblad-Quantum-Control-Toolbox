@@ -1,4 +1,4 @@
-# Lindblad2
+# TwinBlad
 
 This is a program for analyzing the fast control of a 2d Lindblad quantum control system. The goals are: (1) Find two "threads" in the Bloch ball: the points on concentric surfaces where the (outward) radial velocity is maximized or minimized. The minimum radial velocity is always non-positive; the maximum velocity is positive at the center, and decreases monotonically as one moves outward. At some point before the outermost sphere, the maximum velocity crosses zero - this point is called the "horizon". (2) Find the "chimney", the region where outward velocity is positive.  
 
@@ -20,7 +20,7 @@ If all three are properly installed, simply run `make` from the *src* directory.
 
 ### Usage
 
-Lindblad2 is an interactive program from the terminal. There are five options for producing a system: 
+TwinBlad is an interactive program from the terminal. There are five options for producing a system: 
 
 1. The program can choose a random system (this is the appropriate choice for users unfamiliar with the math).
 2. The six system parameters can be stored as a file.
