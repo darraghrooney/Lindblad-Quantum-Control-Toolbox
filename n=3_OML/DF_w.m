@@ -6,6 +6,10 @@ function[deriv] = DF_w(Ls, flag)
 % Get the basis for the tangent space
 
 gens = su3off_basis();
+for j = 1:6
+  gens(:,:,j) = flag*gens(:,:,j)*flag';
+end
+
 
 % Initialize derivative
 

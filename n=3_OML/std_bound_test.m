@@ -54,6 +54,7 @@ for j = 1:uno
 
     % Calculate stat state and plot
 		[A,b,rinf] = A_b_rinf(Ltow(L,flagper));
+    colormap([0,0,0]);
 		plot(rinf(1),rinf(2),'g');
     hold on;
 	end
@@ -61,7 +62,7 @@ end
 
 % Plot the rotation curves
 for j = 1:9
-	plot(bound(1,:,j),bound(2,:,j),'b','linewidth',2);
+	plot(bound(1,:,j),bound(2,:,j),'linewidth',2);
   hold on;
 end
 
@@ -123,7 +124,7 @@ for j = 1:uno
   % Calculate and plot stat state
   w = order_rates(Ltow(L,flag));
 	[A,b,rinf] = A_b_rinf(w);
-	plot(rinf(1),rinf(2),'g');
+  plot(rinf(1),rinf(2),'g');
   hold on;
 end
 
@@ -135,7 +136,7 @@ for j = 1:9
   
   % Plot if points remaining
   if size(pcand,2)>0
-  	plot(pcand(1,:),pcand(2,:),'b','linewidth',2);
+  	plot(pcand(1,:),pcand(2,:),'linewidth',2);
   end
 end
 		
