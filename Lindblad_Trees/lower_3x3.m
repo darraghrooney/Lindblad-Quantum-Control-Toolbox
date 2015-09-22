@@ -8,7 +8,7 @@
 function[stat] = lower_3x3(L, uno, lamb)
 
 % Initialize
-grid1 = 10;
+grid1 = 40;
 count = 1;
 stat = zeros(2,grid1+1,9);
 Pi = [[1,-1,0]/sqrt(2);[1,1,-2]/sqrt(6)];
@@ -36,7 +36,7 @@ for gr = 0:grid1
   % Calculate rotational stat-states
 	w = w_get(L,flag);
   constraints = multisink(3,3,w);
-  stat(:,gr+1,count) = Pi*(lamb*constraints(4:6,:)/constraints(1,1))';
+  stat(:,gr+1,count) = Pi*sort( (lamb*constraints(4:6,:)/constraints(1,1))','descend');
 
 end 
 
@@ -54,14 +54,9 @@ for j = 1:uno
 	w = w_get(L,flag);
   constraints = multisink(3,3,w);
   ss = (lamb*constraints(4:6,:))'/constraints(1,1);
-
-  % For each random flag, also use the other five permutations
-  for j = 1:6
-    pm = eye(3)(:,perms([1,2,3])(j,:));
-    ssp = Pi*pm*sort(real(ss),'descend');
-    plot(ssp(1),ssp(2),'g','markersize', 4);
+  ssp = Pi*sort(real(ss),'descend');
+  plot(ssp(1),ssp(2),'color',[.5,.5,.5],'markersize', 4);
     hold on
-  end
 end
 
 % Plot the rotational stat-states
@@ -69,17 +64,14 @@ end
 for j = 1:9
   pcand = stat(:,:,j);
   if (size(pcand,2)>0)
-    plot(pcand(1,:),pcand(2,:),'b','linewidth', 2);
+    plot(pcand(1,:),pcand(2,:),'k','linewidth', 2);
     hold on;
   end
 end
 
 % Plot arena
 
-plot([0,0,1,-1,0]/sqrt(2),[1,-2,1,1,-2]/sqrt(6), 'k');
-plot([1,-1/2]/sqrt(2),[1,-1/2]/sqrt(6), 'k');
-plot([-1,1/2]/sqrt(2),[1,-1/2]/sqrt(6), 'k');
-axis([-.75,.75,-1,.5]);
+plot([0,0,1,0]/sqrt(2),[0,1,1,0]/sqrt(6), 'k');
 hold off
 
 end

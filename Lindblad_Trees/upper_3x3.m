@@ -8,7 +8,7 @@
 function[stat] = upper_3x3(L, uno, lamb)
 
 %Initialization
-grid1 = 10;
+grid1 = 40;
 count = 1;
 stat = zeros(2,grid1+1,9);
 Pi = [[1,-1,0]/sqrt(2);[1,1,-2]/sqrt(6)];
@@ -36,7 +36,8 @@ for gr = 0:grid1
   % Calculate stat-state
 	w = w_get(L,flag);
   constraints = multisink(3,3,w);
-  stat(:,gr+1,count) = Pi*(lamb*constraints(4:6,:)/constraints(1,1))';
+  stat3 = sort((lamb*constraints(4:6,:)/constraints(1,1))','descend');
+  stat(:,gr+1,count) = Pi*stat3;
 
 end 
 
@@ -64,10 +65,11 @@ for k = 1:6
   w = w_get(L,flag);
   constraints = multisink(3,3,w);
   ss = (lamb*constraints(4:6,:))'/constraints(1,1);
-  ssp = Pi*real(ss);
+  ss = sort(real(ss),'descend');
+  ssp = Pi*ss;
   
   % Plot
-  plot(ssp(1),ssp(2),'g','markersize', 4);
+  plot(ssp(1),ssp(2),'color',[.5,.5,.5],'markersize', 4);
   hold on
 
 end  
@@ -77,16 +79,13 @@ end
 for j = 1:9
   pcand = stat(:,:,j);
   if (size(pcand,2)>0)
-    plot(pcand(1,:),pcand(2,:),'b', 'linewidth', 2);
+    plot(pcand(1,:),pcand(2,:),'k', 'linewidth', 2);
     hold on;
   end
 end
 
 % Plot arena
-plot([0,0,1,-1,0]/sqrt(2),[1,-2,1,1,-2]/sqrt(6), 'k');
-plot([1,-1/2]/sqrt(2),[1,-1/2]/sqrt(6), 'k');
-plot([-1,1/2]/sqrt(2),[1,-1/2]/sqrt(6), 'k');
-axis([-.75,.75,-1,.5]);
+plot([0,0,1,0]/sqrt(2),[0,1,1,0]/sqrt(6), 'k');
 hold off
 
 end
