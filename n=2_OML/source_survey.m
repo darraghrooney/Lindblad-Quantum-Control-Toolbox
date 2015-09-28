@@ -4,25 +4,43 @@
 # systems. The second return value is an ?x3 matrix containing a list of the
 # alternate thread sources.
 
-function [sourceno, sources] = source_survey (N)
+function [sourceno, typeO, typeI, typeII] = source_survey (Na, Nb)
 
-sourceno = zeros(4,1);
-sources = [];
+sourceno = zeros(3,1);
+typeO = [];
+typeI = [];
+typeII = [];
 
 # Sweep over number of experiments
-for j = 1:N
+for k1 = 1:Na
+for k2 = 1:k1
+
+a=[100, 100*(2*k1-1)/2/Na, 100*(2*k2-1)/2/Na]';
+
+for j = 1:Nb
 
   # Get randomized data
-  [a,b] = randA;
+  b = randb(a);
 
   # Find sources
   source_j = find_sources(a(1),a(2),a(3),b(1),b(2),b(3));
 
   # Add to return values
   sn = size(source_j,1);
-  sources = [sources; source_j];
+  if (sn == 0)
+    typeO = [typeO; a', b'];
+  elseif(sn == 1) 
+    typeI = [typeI; a', b', source_j(1,:)];
+  else
+    if ( norm( source_j(1,:)) < norm( source_j(2,:)) )
+      typeII = [typeII; a', b', source_j(1,:), source_j(2,:)];
+    else
+      typeII = [typeII; a', b', source_j(2,:), source_j(1,:)];
+    endif
+  endif
   sourceno(sn+1)++;
   
 endfor
-
+endfor
+endfor
 endfunction
