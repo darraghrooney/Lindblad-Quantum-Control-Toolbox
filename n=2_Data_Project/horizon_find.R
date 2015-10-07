@@ -89,8 +89,7 @@ horizon_find <- function(a,b){
   # Calculate horizon
   horizon = matrix(rep(0,3));
   for(k in 1:length(mus)){
-  
-    if ( abs(Im(mus[k] )) > 1e-6){next } # Skip complex solutions
+    if ( abs(Im(mus[k] )) > 1e-3){next } # Skip complex solutions
     nr_test = b/(Re(mus[k])-a)/2         # Calculate horizon
     if(max(is.na(nr_test) | is.infinite(nr_test))){next} # Skip Nans and infs
   

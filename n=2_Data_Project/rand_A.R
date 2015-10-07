@@ -61,5 +61,3 @@ b_vec <- function(bm){
   bv[3] = 2*bm[1,2]
   return( bv )
 }
-
-  
