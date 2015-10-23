@@ -16,31 +16,13 @@ horizon_find <- function(a,b){
         if (abs(b[1])>1e-10){ horizon[1]=b[1]/(a[2]+a[3])}
         if (abs(b[2])>1e-10){ horizon[2]=b[2]/(a[1]+a[3])}
         if (abs(b[3])>1e-10){ horizon[3]=b[3]/(a[1]+a[2])}
-        
         return(horizon)            
       }
 
   # For b with two non-zero elements, we must solve a cubic polynomial
   if ( min(abs(b)) < 1e-10 ){
 
-    J1 = which.min(abs(b))  # establish the zero direction
-    J2 = (J1 %% 3) + 1;
-    J3 = ((J1+1) %% 3)+1;
-    A1 = a[J1]
-    A2 = a[J2]
-    A3 = a[J3]
-    B1 = b[J1]
-    B2 = b[J2]
-    B3 = b[J3]
-
-    # Calculate polynomial co-efficients
-    coeff = c( 2*(B2^2+B3^2),
-      B2^2*(-2*A2-5*A3-A1)/10+B3^2*(-2*A3-5*A2-A1)/10,
-      2*B2^2*(2*A3^2+2*A2*A3+A3*A1)/100+2*B3^2*(2*A2^2+2*A2*A3+A2*A1)/100,
-      B2^2*(-2*A2*A3^2-A3^3-A3^2*A1)/1000+B3^2*(-2*A3*A2^2-A2^3-A2^2*A1)/1000)
-
-    # Solve polynomial
-    mus = polyroot(coeff[4:1]);
+    mus = find_mus3(a,b)
 
     # Find horizon
     horizon = matrix(rep(0,3))
@@ -64,6 +46,37 @@ horizon_find <- function(a,b){
   }
   
   # For b with all non-zero elements, we must solve a quintic equation
+  mus = find_mus5(a,b)
+
+  # Calculate horizon
+  horizon = matrix(rep(0,3));
+  
+  for(k in 1:length(mus)){
+  
+    nr_test = b/(Re(mus[k])-a)/2         # Calculate horizon
+    if(max(is.infinite(nr_test))){next} # Skip Nans and infs
+  
+    # Keep only if new horizon is bigger than old, and is inside the Bloch ball
+    if (norm(nr_test, type="2") <= 1){
+      horizon = nr_test
+      break
+    }
+  }
+  return(horizon)
+}
+
+h_from_n <- function(n,a,b){
+  n_mat = diag(rep(0,3))
+  n_mat[1,2] = n[3] 
+  n_mat[2,3] = n[1] 
+  n_mat[3,1] = n[2] 
+  n_mat  = - n_mat + t(n_mat) 
+  
+  hM = - n_mat %*% ( b + diag(a) %*% n)/(sum(n^2))
+  return(hM)
+}
+
+find_mus5 <- function(a,b){
   coeff_exp = matrix(0,6,3);
   for(j in 1:3){
     j1 = (j %% 3) + 1;
@@ -71,7 +84,7 @@ horizon_find <- function(a,b){
     A1 = a[j]; B1 = b[j];
     A2 = a[j1]; B2 = b[j1];
     A3 = a[j2]; B3 = b[j2];
-  
+    
     # Calculate polynomial  co-efficients
     coeff_exp[1,j] = 2;   
     coeff_exp[2,j] = -4*(A2+A3);   
@@ -81,21 +94,34 @@ horizon_find <- function(a,b){
     coeff_exp[2:6,j] = coeff_exp[2:6,j] - coeff_exp[1:5,j]*(A2/2+A3/2+A1);
     coeff_exp[,j] = coeff_exp[,j]*B1^2;
   }
-  coeff = rowSums(coeff_exp);
-
-  # Solve polynomial  
-  mus = polyroot(coeff[6:1]);
-
-  # Calculate horizon
-  horizon = matrix(rep(0,3));
-  for(k in 1:length(mus)){
-    if ( abs(Im(mus[k] )) > 1e-3){next } # Skip complex solutions
-    nr_test = b/(Re(mus[k])-a)/2         # Calculate horizon
-    if(max(is.na(nr_test) | is.infinite(nr_test))){next} # Skip Nans and infs
+  coeff = rowSums(coeff_exp)
   
-    # Keep only if new horizon is bigger than old, and is inside the Bloch ball
-    if ( norm(nr_test, type="2") > norm(horizon, type="2") & norm(nr_test, type="2") <= 1){
-      horizon = nr_test}
-  }
-  return(horizon)
+  # Solve polynomial  
+  mus = polyroot(coeff[6:1])
+  
+  return( sort(Re(mus[abs(Im(mus)) < 1e-4]), decreasing=TRUE) )
+}
+
+find_mus3 <- function(a,b){
+
+  J1 = which.min(abs(b))  # establish the zero direction
+  J2 = (J1 %% 3) + 1;
+  J3 = ((J1+1) %% 3)+1;
+  A1 = a[J1]
+  A2 = a[J2]
+  A3 = a[J3]
+  B1 = b[J1]
+  B2 = b[J2]
+  B3 = b[J3]
+
+  # Calculate polynomial co-efficients
+  coeff = c( 2*(B2^2+B3^2),
+             B2^2*(-2*A2-5*A3-A1)/10+B3^2*(-2*A3-5*A2-A1)/10,
+             2*B2^2*(2*A3^2+2*A2*A3+A3*A1)/100+2*B3^2*(2*A2^2+2*A2*A3+A2*A1)/100,
+             B2^2*(-2*A2*A3^2-A3^3-A3^2*A1)/1000+B3^2*(-2*A3*A2^2-A2^3-A2^2*A1)/1000)
+
+  # Solve polynomial
+  mus = polyroot(coeff[4:1]);
+  
+  return(mus)
 }
