@@ -68,7 +68,7 @@ horizon_find <- function(a, b){
     for (k in 1:length(mus)){
       nM = b/2/(-mus[k]+sum(a)-a)
       if (min(is.finite(nM))==0){next}
-      nMmag2 = sum(nM^2)s
+      nMmag2 = sum(nM^2)
       if (nMmag2 > horizon[5]^2 && nMmag2 - 1 < 1e-10){   # Optimal and valid?
         horizon = c(mus[k],nM,sqrt(nMmag2))
       }
@@ -167,6 +167,9 @@ h_from_n <- function(n,a,b){
   n_mat = cross_mat(n)
   
   # Compute Hamiltonian
+  if (sum(n^2) < 1e-8){
+    return(rep(0,3))
+  }
   hM = - n_mat %*% ( b + diag(a) %*% n)/(sum(n^2))
   return(hM)
 }
