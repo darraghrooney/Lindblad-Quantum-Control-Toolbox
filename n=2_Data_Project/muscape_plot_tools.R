@@ -53,7 +53,7 @@ plot_angles <- function(ms_data, rot_ang = 70){
 # (that is disjoint from vars_to_fix). The plots are striped, so 
 # var_to_stripe should be in 1:4 but not in vars_to_fix
 
-plot_fix_var <- function(ms_data, vars_to_fix, fixed_values, vars_to_plot,
+plot_fix_2var <- function(ms_data, vars_to_fix, fixed_values, vars_to_plot,
     var_to_stripe, rot_ang=150){
   
   library(scatterplot3d)
@@ -117,3 +117,24 @@ plot_fix_var <- function(ms_data, vars_to_fix, fixed_values, vars_to_plot,
   sp3$points3d(to_plot[,3], to_plot[,4], to_plot[,5], type="p", cex=.5, pch=16,
                col = as.character(to_plot$colormap))
 }
+
+plot_fix_3var <- function(ms_data, vars_to_fix, fixed_values, vars_to_plot){
+  
+  # Select out the data for fixed values
+  eps = 1e-8
+  to_plot = ms_data[ findInterval( ms_data[,vars_to_fix[1]], 
+        fixed_values[1] + c(-eps,eps)) == 1  & findInterval( ms_data[,vars_to_fix[2]], 
+        fixed_values[2]+c(-eps,eps))==1 & findInterval( ms_data[,vars_to_fix[3]], 
+        fixed_values[3]+c(-eps,eps))==1, c(setdiff(1:4,vars_to_fix), 
+                                           vars_to_plot) ]
+
+  # Axis labels
+  axlab = names(ms_data)[vars_to_plot]
+  axlab[axlab == "cp"] = "cosphi"
+  
+  # Create plot object
+  plot(to_plot[,2],to_plot[,3], type="p", xlab=axlab[1], ylab=axlab[2],
+       pch = 16, cex = .6)
+  par(mar=c(5,4,4,2))   # I needed to adjust left margin to see the y-axis label
+}
+  
