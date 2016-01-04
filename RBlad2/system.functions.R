@@ -14,6 +14,7 @@
 #   find.mus3()
 #   mag()
 #   tr()
+#   perp.basis()
 
 ##############################################################
 
@@ -206,14 +207,11 @@ A.assemble <- function(Ab){
 # the necessary (non-unique) Hamiltonian
 h.from.n <- function(n,a,b){
   
-  # Matrixify n
-  n.mat = cross.mat(n)
-  
   # Compute Hamiltonian
   if (sum(n^2) < 1e-8){
     return(rep(0,3))
   }
-  hM = - n.mat %*% ( b + diag(a) %*% n)/(sum(n^2))
+  hM = - cross.mat(n) %*% ( b + diag(a) %*% n)/(mag(n)^2)
   return(hM)
 }
 
@@ -390,3 +388,15 @@ tr <- function(A){
   return(sum(diag(A)))
 }
 
+# This is a function that, given a vector in R3, returns an orthonormal basis for
+# the orthogonal space.
+
+perp.basis <- function(v){
+  
+  v = v/mag(v)
+  w1 = cross.mat(t(c(1,0,0))) %*% v
+  w2 = cross.mat(t(c(0,1,0))) %*% v
+  w3 = cross.mat(t(c(0,0,1))) %*% v
+  evs = eigen(cbind(w1,w2,w3))$vectors[,1]*sqrt(2)
+  return(cbind(Re(evs), Im(evs)))
+}
