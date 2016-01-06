@@ -172,19 +172,19 @@ create.training.mm <- function(){
 	meas.lims = c(30,3000)
   	meas.no = 100
   	mms = round((min(sqrt(meas.lims))+diff(range(sqrt(meas.lims)))*(0:(meas.no-1))/(meas.no-1))^2)
-  	return(measurements.generate(mms, 700))
+  	return(measurements.generate(mms, 700, 53))
 }
 
 create.crossval.mm <- function(){
   	n = 30000
   	meas.lims = c(30,6000)
   	mms = round((min(sqrt(meas.lims))+diff(range(sqrt(meas.lims)))*runif(n))^2)
-  	return(measurements.generate(mms))  
+  	return(measurements.generate(mms, seed = 151))  
 }
 
-create.crossval.mm <- function(){
+create.test.mm <- function(){
   	n = 100000
   	meas.lims = c(30,6000)
   	mms = round((min(sqrt(meas.lims))+diff(range(sqrt(meas.lims)))*runif(n))^2)
-  	return(measurements.generate(mms))  
+  	return(measurements.generate(mms, seed = 23432))  
 }
