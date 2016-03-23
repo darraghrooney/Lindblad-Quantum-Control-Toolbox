@@ -23,16 +23,16 @@
 # If the rot.switch is set to true, the system is given a random
 # SO(3) rotation
 
-rand.A <- function( rot.switch = FALSE ){
+rand.A <- function(scale = 1, rot.switch = FALSE ){
   
   # a is a sorted vector whose largest element is 1. The other two are uniform on [0,1]
-  a = c(1,sort(runif(2),decreasing=TRUE))
+  a = scale*c(1,sort(runif(2),decreasing=TRUE))
   
   # To get b, we pick a uniform point in the 1/8th unit ball, and stretch accordingly
   cosphi = runif(1)
   theta = pi*runif(1)/2
   brad = runif(1)^(1/3)
-  b = b.from.angles(a,cosphi,theta,brad)
+  b = scale*b.from.angles(a,cosphi,theta,brad)
   
   # Calculate the A matrix
   A = diag(as.vector(a)) - 1i*cross.mat(b)/2
