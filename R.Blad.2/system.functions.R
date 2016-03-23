@@ -16,6 +16,14 @@
 #   tr()
 #   perp.basis()
 
+# This file is also responsible for the global constants:
+
+MM.BUDGET = 1e7
+MIN.SCALE = 1e4
+MAX.SCALE = 1e12
+MIN.HSCALE = 1
+MAX.SCALE = 1e16
+
 ##############################################################
 
 # This function generates a random n=2 Lindblad system.
@@ -32,7 +40,7 @@ rand.A <- function(scale = 1, rot.switch = FALSE ){
   cosphi = runif(1)
   theta = pi*runif(1)/2
   brad = runif(1)^(1/3)
-  b = scale*b.from.angles(a,cosphi,theta,brad)
+  b = b.from.angles(a,cosphi,theta,brad)
   
   # Calculate the A matrix
   A = diag(as.vector(a)) - 1i*cross.mat(b)/2
