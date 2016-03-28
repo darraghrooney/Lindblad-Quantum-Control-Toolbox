@@ -53,12 +53,8 @@ ellipsoid.plot <- function(a, b, naked = FALSE){ # We assume no rotation
 # The input H indicates our presumed scale. The "plt" switch plots the collected
 # measurements
 
-goldilocks.example <- function(H, plt = TRUE){
+goldilocks.example <- function(H, system, plt = TRUE){
 
-  # Create system
-  set.seed(454)
-  system = rand.A(scale = 1e4)
-  
   # Get measurements
   mm = collect.mm(system, mph = 1e4, H=H, naive = TRUE)
   
