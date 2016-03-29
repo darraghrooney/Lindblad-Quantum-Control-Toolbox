@@ -22,7 +22,7 @@ MM.BUDGET = 1e7
 MIN.SCALE = 1e4
 MAX.SCALE = 1e12
 MIN.HSCALE = 1
-MAX.SCALE = 1e16
+MAX.HSCALE = 1e16
 
 ##############################################################
 
@@ -37,8 +37,8 @@ rand.A <- function(scale = 1, rot.switch = FALSE ){
   a = scale*c(1,sort(runif(2),decreasing=TRUE))
   
   # To get b, we pick a uniform point in the 1/8th unit ball, and stretch accordingly
-  cosphi = runif(1)
-  theta = pi*runif(1)/2
+  cosphi = 2*runif(1)-1
+  theta = 2*pi*runif(1)
   brad = runif(1)^(1/3)
   b = b.from.angles(a,cosphi,theta,brad)
   
@@ -168,6 +168,7 @@ u.from.rot <- function(rot){
 
 # Helper function to matrixify vector for cross product
 cross.mat <- function(vc){
+  vc = as.matrix(vc)
   cmt = diag(rep(0,3))
   cmt[1,2] = vc[3] 
   cmt[2,3] = vc[1] 
