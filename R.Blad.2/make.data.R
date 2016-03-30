@@ -16,7 +16,7 @@ make.training.set <- function(seed, dest.file, po.no){
   set.seed(281)
   po.no = 7000
   train.set = data.frame(matrix(0,po.no,19))
-  names(scan) = c("scale","meas.no", "p1","p2","a1.act","a2.act",
+  names(train.set) = c("scale","meas.no", "p1","p2","a1.act","a2.act",
         "a3.act","b1.act","b2.act","b3.act","a11.meas",
         "a22.meas","a33.meas","a12.meas",
         "a23.meas","a31.meas","b1.meas","b2.meas","b3.meas")
@@ -36,8 +36,8 @@ make.training.set <- function(seed, dest.file, po.no){
     
     # Estimate parameters and add to data set
     estimate = system.determine(system, meas, p1, p2) 
-    train.set[j,] = c(scale, meas, p1, p2, system$a, system$b,
-                 estimate)
+    train.set[j,] = c(scale, meas, p1, p2, system$a, system$b, estimate[4:9],estimate[1:3])
+    
   }
   writeMat("train.set.MAT", training = train.set)
 }
@@ -66,7 +66,7 @@ make.test.set <- function(){
     scale = MIN.SCALE*(MAX.SCALE/MIN.SCALE)^runif(1)
     system = rand.A(scale, FALSE)
     estimate = system.determine(system, mph, p1, p2) 
-    test.set[j,] = c(system$a, system$b, estimate)
+    test.set[j,] = c(system$a, system$b, estimate[4:9],estimate[1:3])
   }
   
   writeMat("test.set.MAT", test = test.set)

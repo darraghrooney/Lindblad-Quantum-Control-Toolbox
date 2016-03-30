@@ -72,7 +72,7 @@ C.helper <- function(ns){
       
       # For each Bloch vector, compute the relevant 3x6 matrix
       for (j in 1:dim(ns)[1]){
-        mtrx[(j-1)*3+1:3,] = C.helper.helper(ns[j,]) 
+        mtrx[(j-1)*3+1:3,] = C.helper.helper(as.numeric(ns[j,])) 
       }
       return(mtrx)  
     }
