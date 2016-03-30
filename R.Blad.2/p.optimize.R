@@ -1,14 +1,27 @@
+# This file contains the following files:
+#
+# p.optimize()
+# best.pt()
+# circumradius()
+
+# Pre-reqs:
+library(deldir)
+source("assessment.R")
 library(R.matlab)
 train.set = data.frame(readMat("assess.train.MAT")$assess[,,1])
 
-library(deldir)
-source("assessment.R")
+# This function optimizes p1 and p2 by computing the Delaunay triangulation
+# and then using the point with largest circumradius
 
 p.optimize <- function(){
 
   train.size = dim(train.set)[1]
+
+  # Any estimation that has a metric worse than 1-exp(-2) ~ 0.86 is considered
+  # "bad" 
   tol = -2
 
+  # Find nans and bad points
   nan.pts = is.nan(train.set$trace.metric) & is.nan(train.set$diag.metric)
   bad.pts1 = log(1-train.set$trace.metric) > tol
   bad.pts1[is.na(bad.pts1)] = TRUE
@@ -17,19 +30,32 @@ p.optimize <- function(){
   bad.pts4 = log(1-train.set$b.metric) > tol
   bad.set = train.set[nan.pts | bad.pts1 | bad.pts2 | bad.pts3 | bad.pts4,]
   bad.size = dim(bad.set)[1]
-  
+
+  # Compute triangulation and plot the Dirichlet tessellation  
   dd = deldir(bad.set[,c("p1", "p2")])
   plot.tile.list(tile.list(dd),border = 2,xlim=c(1,3),ylim=c(0,.5))
+  
+  # Find the optimal p1, p2
   p.opt = best.pt(dd)
   
+  # Return both the optimization and the set of bad points
   return(list(bad.set = bad.set, p.opt = p.opt))
 }
 
+# This function takes a Delaunay triangulation and finds the optimal point 
+# (essentially the triangle with the largest circumradius)
+
 best.pt <- function(dd){
+  
+  # Get the triangles
   deltri = triang.list(dd)
   best.pt = c(0,0,0)
+  
+  # Sweep over triangles to get the optimal points
   for (j in 1:length(deltri)){
     new.pt = circumradius(deltri[[j]])
+    
+    # Ignore points outside the allowed parameter space
     if (new.pt$cr > best.pt[3] & new.pt$cc[1] > 1  & new.pt$cc[1] < 3
         & new.pt$cc[2] > 0 & new.pt$cc[2] < 0.5){
       best.pt = c(new.pt$cc, new.pt$cr)
@@ -38,6 +64,7 @@ best.pt <- function(dd){
   return(best.pt)
 }
 
+# This function computes the circumradius and circumcenter of a triangle
 circumradius <- function(triangle){
   xs = triangle$x
   ys = triangle$y

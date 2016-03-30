@@ -2,7 +2,6 @@
 #
 # collect.mm()
 # system.determine()
-# estimate.system()
 
 # Pre-reqs
 source("system.functions.R")
