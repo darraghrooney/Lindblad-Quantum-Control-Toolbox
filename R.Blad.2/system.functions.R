@@ -213,7 +213,8 @@ A.assemble <- function(Ab){
 }
 
 # Given a point in a Bloch ball for a Lindblad system, computes
-# the necessary (non-unique) Hamiltonian
+# the necessary (non-unique) Hamiltonian that kills the transverse
+# derivative (Hamiltonian can't affect the radial derivative)
 h.from.n <- function(n,a,b){
   
   # Compute Hamiltonian
@@ -397,14 +398,20 @@ tr <- function(A){
 }
 
 # This is a function that, given a vector in R3, returns an orthonormal basis for
-# the orthogonal space.
+# the orthogonal space. 
 
 perp.basis <- function(v){
   
-  v = v/mag(v)
-  w1 = cross.mat(t(c(1,0,0))) %*% v
-  w2 = cross.mat(t(c(0,1,0))) %*% v
-  w3 = cross.mat(t(c(0,0,1))) %*% v
-  evs = eigen(cbind(w1,w2,w3))$vectors[,1]*sqrt(2)
-  return(cbind(Re(evs), Im(evs)))
+  if(mag(v)==0){
+    print("Vector cannot be the zero vector.")
+  }
+  else{
+    v = v/mag(v)
+    w1 = cross.mat(t(c(1,0,0))) %*% v
+    w2 = cross.mat(t(c(0,1,0))) %*% v
+    w3 = cross.mat(t(c(0,0,1))) %*% v
+    evs = eigen(cbind(w1,w2,w3))$vectors[,1]*sqrt(2)
+    return(cbind(Re(evs), Im(evs)))
+    
+  }
 }
