@@ -10,14 +10,14 @@ source("sys.solve.R")
 
 # This function takes measurements of a system. The hyper-parameters mph, p1 and p2 
 # must be specified. The "naive" switch turns off the scale tuning
-collect.mm <- function(system, mph, p1, p2, naive = FALSE){
+collect.mm <- function(system, mph, H, p1, p2, naive = FALSE){
   
   # Parameters for assigning measurements
   ham.no = ceiling(MM.BUDGET/mph)
   leftover = MM.BUDGET - mph*(ham.no-1)
   
   # Initialize scale to least possible a_1 scale
-  est.scale = MIN.SCALE
+  est.scale = H
   
   a = system$a
   b = system$b
