@@ -3,8 +3,8 @@
 # ellipsoid.plot.R
 # goldilocks.example.R
 
-# Load pre-quisite code
-source("measure.n.R")
+# Load pre-requisite code
+source("algorithm.R")
 source("sys.solve.R")
 library(scatterplot3d)
 
