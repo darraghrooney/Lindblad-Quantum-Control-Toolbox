@@ -16,7 +16,7 @@ collect.mm <- function(system, mph, H, p1, p2, naive = FALSE){
   ham.no = ceiling(MM.BUDGET/mph)
   leftover = MM.BUDGET - mph*(ham.no-1)
   
-  # Initialize scale to least possible a_1 scale
+  # Initialize scale
   est.scale = H
   
   a = system$a
