@@ -4,10 +4,10 @@
 # calc.y()
 # calc.C()
 # calc.C.helper()
-# calc.C.helper.helper()
+# calc.C.helper2()
 
-# For given hamiltonians and measured Bloch vectors, this function calculates x,
-# the vectorized system parameters
+# For given hamiltonians and measured Bloch vectors, this 
+# function calculates x, the vectorized system parameters
 
 calc.x <- function(h, n){
 
@@ -60,7 +60,7 @@ C.helper <- function(ns){
     if (length(ns) != 3){
       return(FALSE)
     }
-    return(C.helper.helper(ns))    
+    return(C.helper2(ns))    
   }
   else{
     # Check to see ns is a stack of 3-vectors
@@ -72,7 +72,7 @@ C.helper <- function(ns){
       
       # For each Bloch vector, compute the relevant 3x6 matrix
       for (j in 1:dim(ns)[1]){
-        mtrx[(j-1)*3+1:3,] = C.helper.helper(as.numeric(ns[j,])) 
+        mtrx[(j-1)*3+1:3,] = C.helper2(as.numeric(ns[j,])) 
       }
       return(mtrx)  
     }
@@ -80,7 +80,7 @@ C.helper <- function(ns){
 }
 
 # This function calculates the 3x6 matrix piece for each Bloch vector
-C.helper.helper <- function(n){
+C.helper2 <- function(n){
   # This is the middle third 
   piece1 = diag(n) - n %*% t(c(1,1,1))
   # This is the right third
