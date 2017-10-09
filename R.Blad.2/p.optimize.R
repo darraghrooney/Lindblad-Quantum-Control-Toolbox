@@ -6,8 +6,8 @@
 
 # Pre-reqs:
 library(deldir)
-source("assessment.R")
 library(R.matlab)
+source("assessment.R")
 train.set = data.frame(readMat("assess.train.MAT")$assess[,,1])
 
 # This function optimizes p1 and p2 by computing the Delaunay triangulation
