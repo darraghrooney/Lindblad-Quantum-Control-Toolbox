@@ -5,7 +5,6 @@
 
 # Pre-reqs
 source("system.functions.R")
-source("measure.n.R")
 source("algorithm.R")
 library(R.matlab)
 
@@ -53,7 +52,7 @@ make.test.set <- function(){
   test.size = 3000
 
   # Set hyper-parameters
-  mph = 5e4
+  mph = 8.75e4
   p1 = p.opt[1]
   p2 = p.opt[2]
   test.set = data.frame(matrix(0, test.size, 15))
