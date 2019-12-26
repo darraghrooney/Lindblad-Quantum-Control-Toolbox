@@ -186,9 +186,9 @@ cross.vec <- function(cmt){
 }
 
 # This function takes a positive-definite 3x3 complex matrix, and decomposes it
-# into three parts: the sorted vector of eigenvalues of Re(A), the eigenvector
-# matrix of Re(A), and the b-vector representing the imaginary parts of the
-# off-diagonal elements. The rotation is chosen so that the components of b are 
+# into three parts: the sorted vector of eigenvalues of Re(A), the b-vector representing 
+# the off-diagonal elements of Im(A), and the quarternion representation of the rotation
+# matrix of Re(A). The rotation is chosen so that the components of b are 
 # all non-negative. If b has zero components, there is a binary ambiguity in the
 # relative axis, but there's no systematic way to resolve it.
 
