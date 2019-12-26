@@ -13,6 +13,11 @@ library(scatterplot3d)
 
 ellipsoid.plot <- function(a, b, naked = FALSE){ # We assume no rotation
   
+  # color vectors
+  
+  incol = rgb(0,0,1)
+  outcol = rgb(0,.85,0)
+  
   # Construct Bloch sphere points
   bb.grid = 100
   bb.th = (1:bb.grid)/bb.grid*2*pi
@@ -25,11 +30,11 @@ ellipsoid.plot <- function(a, b, naked = FALSE){ # We assume no rotation
   # Plot the back of the Bloch sphere.
   if (naked){
     s3d <- scatterplot3d(bb[1:((bb.grid+1)*bb.grid*.6),], cex.symbols = .4, pch = 18, 
-                         color = "grey", angle = 10, box=FALSE, grid = FALSE, axis=FALSE)
+                         color = outcol, angle = 10, box=FALSE, grid = FALSE, axis=FALSE)
   }
   else{
     s3d <- scatterplot3d(bb[1:((bb.grid+1)*bb.grid*.6),], cex.symbols = .4, pch = 18, 
-                         color = "grey", angle = 10)
+                         color = outcol, angle = 10)
   }
   
   # Construct ellipsoid
@@ -41,11 +46,11 @@ ellipsoid.plot <- function(a, b, naked = FALSE){ # We assume no rotation
                   nz = centre[3] + axes[3]*kronecker(rep(1,bb.grid), bb.cp))
 
   # Plot ellipsoid
-  s3d$points(am,cex =.3, pch=18, col="blue")
+  s3d$points(am,cex =.3, pch=18, col=incol)
   
   # Plot front of Bloch sphere
   s3d$points(bb[((bb.grid+1)*bb.grid*.6):((bb.grid+1)*bb.grid),], 
-             cex = .4, pch = 18, col = "grey")  
+             cex = .4, pch = 18, col = outcol)  
 }
 
 # This function is used to illustrate the problem of scale: parameter estimation
